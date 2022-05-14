@@ -15,9 +15,8 @@
 
 
 /**
- * todo 1: dns, ssl setting 2022.5.4 (whiteblue.org)
- * todo 2: log system
- * last modified date: 2022.5.4 03:34
+ * @deprecated 1.x
+ * latest version 1.3
  */
 
 
@@ -38,38 +37,21 @@ const HTTP_PORT = 80;
 const HTTPS_PORT = 443;
 
 const options = {
-    ca: fs.readFileSync('/etc/letsencrypt/live/whiteblue.kr/fullchain.pem'),
-    key: fs.readFileSync('/etc/letsencrypt/live/whiteblue.kr/privkey.pem'),
-    cert: fs.readFileSync('/etc/letsencrypt/live/whiteblue.kr/cert.pem')
+	ca: fs.readFileSync('/etc/letsencrypt/live/whiteblue.kr/fullchain.pem'),
+	key: fs.readFileSync('/etc/letsencrypt/live/whiteblue.kr/privkey.pem'),
+	cert: fs.readFileSync('/etc/letsencrypt/live/whiteblue.kr/cert.pem')
 };
 
-/** JSON DATA
- *	status: 'success',
- *	country: 'South Korea',
- *	countryCode: 'KR',
- *	region: '11',
- *	regionName: 'Seoul',
- *	city: 'Nowon-gu',
- *	zip: '01686',
- *	lat: 37.6576,
- *	lon: 127.072,
- *	timezone: 'Asia/Seoul',
- *	isp: 'LG POWERCOMM',
- *	org: 'Xpeed',
- *	as: 'AS17858 LG POWERCOMM',
- *	query: '122.44.251.243'
- */
-
 const getAsync = async(ip) => {
-    try{
-        const response = await fetch('http://ip-api.com/json/' + ip);
-        const json = await response.json();
+	try{
+		const response = await fetch('http://ip-api.com/json/' + ip);
+		const json = await response.json();
 		console.log(time() + ' country: ' + json['country']);
-    }catch(err){
-        console.log(err);
-    }finally{
-        
-    }
+	}catch(err){
+		console.log(err);
+	}finally{
+	
+	}
 };
 
 const time = () => {
@@ -106,14 +88,14 @@ app.get('/', function(req, res){
 });
 
 app.get('/version', function(req, res){
-    res.status(200).sendFile(__dirname + '/html/version.html');
+	res.status(200).sendFile(__dirname + '/html/version.html');
 	console.log(time() + ' client IP: ' + requestIp.getClientIp(req));
 	console.log(time() + ' url: ' + req.url);
 	getAsync(requestIp.getClientIp(req));
 });
 
 app.get('/404', function(req, res){
-    res.status(200).sendFile(__dirname + '/html/404.html');
+	res.status(200).sendFile(__dirname + '/html/404.html');
 });
 
 app.get('*', function(req, res){
