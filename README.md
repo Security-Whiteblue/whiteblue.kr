@@ -1,2 +1,3 @@
 # whiteblue.kr
-Security-Whiteblue website
+deprecated 1.x
+latest version 1.3
