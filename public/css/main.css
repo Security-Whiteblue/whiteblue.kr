@@ -1,0 +1,237 @@
+@import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
+
+.normal     { font-weight: 400 }
+.bold       { font-weight: 700 }
+.bolder     { font-weight: 800 }
+.light      { font-weight: 300 }
+
+:root {
+  --alert-background-color: #292929;
+  --body-background-color: #292929;
+  --president-background-color: #fff;
+  --activities-background-color: #3366CC;
+  --introduce-background-color: #3366CC;
+  --technologies-background-color: #fff;
+  --contact-background-color: #fff;
+  --member-background-color: #3366CC;
+}
+
+/*@media (prefers-color-scheme: light) {
+  :root {
+    --alert-background-color: #292929;
+    --body-background-color: #292929;
+    --president-background-color: #fff;
+    --activities-background-color: #3366CC;
+    --introduce-background-color: #3366CC;
+    --technologies-background-color: #fff;
+    --contact-background-color: #fff;
+    --member-background-color: #3366CC;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --alert-background-color: #292929;
+    --body-background-color: #292929;
+    --president-background-color: #fff;
+    --activities-background-color: #3366CC;
+    --introduce-background-color: #3366CC;
+    --technologies-background-color: #fff;
+    --contact-background-color: #fff;
+    --member-background-color: #3366CC;
+  }
+}*/
+
+.logo {
+  margin-top: 50px;
+}
+
+.alert-success {
+  color: #fffdfd;
+  background-color: var(--alert-background-color);
+  border-color: #25ff00;
+}
+
+.navbar {
+  margin: 0px 30px 0px 30px;
+}
+
+.navbar-brand {
+  margin: 0px 20px 0px 20px;
+}
+
+.nav-link {
+  margin: 0px 20px 0px 20px;
+}
+
+.h1, .h2, .h3, h1, h2, h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.img-circle {
+  border-radius: 25%;
+  padding: 50px;
+}
+
+.img-responsive {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+p {
+  margin: 0px 0px 5px;
+}
+
+html, body {
+  margin:0;
+  border:0;
+  padding:0;
+  font-size:17px;
+  font-family:'NanumSquare', sans-serif;
+  overflow-x:hidden;
+  position: relative;
+  vertical-align: baseline;
+  background-color: var(--body-background-color);
+}
+
+html {
+    -webkit-font-smoothing: antialiased;
+}
+
+h1 {font-size:40px;}
+h2 {font-size:36px;}
+h3 {font-size:30px;}
+h4 {font-size:24px;}
+h5 {font-size:20px;}
+h6 {font-size:18px;}
+
+h2 {
+  padding-bottom: 30px;
+}
+
+.accent {
+  font-family: 'NanumSquare', sans-serif;
+  /*line-height: 14px;*/
+  color: #60A9F0;
+}
+
+.tm-border {
+	border: 5px solid #fff;
+	box-shadow: 2px 2px #000;
+}
+
+.shadow {
+	text-shadow: 1px 1px #000;
+}
+
+.tm-title {
+	color: #66CCFF;
+}
+
+.white {
+  color: #fff;
+}
+
+.president,.activities,
+.introduce,.technologies,
+.contact, .member, .member {
+  padding: 40px;
+  min-height: 330px;
+}
+
+.president,.activities,
+.introduce, .technologies,
+.contact, .member, .member {
+  margin-top: 30px;
+}
+
+/* header section */
+header {
+  text-align: center;
+  min-height: 400px;
+  overflow: hidden;
+  position: relative;
+  padding-top: 80px;
+  padding-bottom: 180px;
+}
+header img {
+  display: inline-block !important;
+}
+header h2 {
+  padding-top: 40px;
+}
+header hr {
+  border-color: #3366CC;
+  width: 100px;
+}
+
+/* about section */
+.president {
+  background: #fff;
+  box-shadow: 0px 1px 5px rgba(50,50,50,0.08);
+}
+
+/* activities section */
+.activities {
+  background: var(--activities-background-color);
+  color: #f5f5f5;
+}
+.activities strong {
+  font-size: 20px
+}
+
+/* introduce section */
+.introduce {
+  background: var(--introduce-background-color);
+  color: #f5f5f5;
+}
+.introduce .introduce-content {
+  padding-bottom: 14px;
+}
+.introduce .introduce-description {
+  margin: 0px 0px 16px;
+}
+
+/* technologies section */
+.technologies {
+  background: var(--technologies-background-color);
+  box-shadow: 0px 1px 5px rgba(50,50,50,0.08);
+}
+
+/* contact section */
+.contact {
+  background: var(--contact-background-color);
+ box-shadow: 0px 1px 5px rgba(50,50,50,0.08);
+}
+
+/* member section */
+.member {
+  background: var(--member-background-color);
+  color: #f5f5f5;
+}
+.member .member-content {
+  padding-bottom: 14px;
+}
+
+/* footer section */
+footer {
+  color: #f9f9f9;
+  text-align: center;
+  padding-top: 140px;
+  padding-bottom: 20px;
+}
+
+@media ( max-width: 360px ) {
+  header h1 {
+    font-size: 30px;
+  }
+  .president h2 {
+    font-size: 24px;
+  }
+  .introduce h4,
+  .member h4 {
+    font-size: 20px;
+  }
+}
