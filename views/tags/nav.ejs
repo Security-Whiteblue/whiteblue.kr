@@ -1,0 +1,39 @@
+<!-- nav section -->
+<nav class="navbar navbar-expand-md navbar-light">
+    <a class="navbar-brand" href="https://whiteblue.kr" style="color:#ffffff"><img src="https://whiteblue.kr/images/icon.png" height="33">&nbsp;<strong>W<span style="color:#60A9F0">B</span></strong></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse justify-content-end" id="navbarTogglerDemo02">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" href="https://whiteblue.kr/version" style="color:#ffffff">히스토리</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="https://whiteblue.kr/notice" style="color:#ffffff">공지사항</a>
+            </li>
+            <% if (session){ %>
+                <% if (session !== undefined){ %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://whiteblue.kr/write" style="color:#ffffff">글쓰기</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://whiteblue.kr/profile" style="color:#ffffff">내정보</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://whiteblue.kr/logout" style="color:#ffffff">로그아웃</a>
+                    </li>
+                <% }else{ %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://whiteblue.kr/login" style="color:#ffffff">로그인</a>
+                    </li>
+                <% } %>
+            <% }else{ %>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://whiteblue.kr/login" style="color:#ffffff">로그인</a>
+                </li>
+            <% } %>
+        </ul>
+    </div>
+</nav>
