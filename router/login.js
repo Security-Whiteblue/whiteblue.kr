@@ -11,11 +11,17 @@
  *                                     888                                       
  *                               Y8b d88P                                       
  *                                "Y88P"                                        
- */
-
-
-/**
- * 보안 패치가 완료된 파일입니다.
+ * 
+ * 
+ * @author dev-ys-36
+ * @link https://github.com/dev-ys-36
+ * @license MIT LICENSE
+ * 
+ * 
+ * The copyright indication and this authorization indication shall be
+ * recorded in all copies or in important parts of the Software.
+ * 
+ * 
  */
 
 
@@ -25,6 +31,7 @@ const router = express.Router();
 const mysql = require('mysql');
 
 const data = require('../setting/data');
+const logger = require('../setting/logger');
 
 //const connection = mysql.createConnection(data.mysql_data('auth'));
 // mysql.createConnection issue
@@ -45,6 +52,7 @@ connection.end();*/
 const pool = mysql.createPool(data.mysql_data('auth'));
 
 router.get('/', function(req, res){
+	logger.userInfo(req);
 	if (req.session.user){
 		res.redirect('/');
 	}else{
@@ -55,6 +63,7 @@ router.get('/', function(req, res){
 });
 
 router.post('/', function(req, res){
+	logger.userInfo(req);
 	const { email, pwd } = req.body;
 	if (email && pwd){
 		pool.getConnection(function(error, connection){

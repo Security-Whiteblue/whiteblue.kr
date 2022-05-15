@@ -11,6 +11,17 @@
  *                                     888                                       
  *                               Y8b d88P                                       
  *                                "Y88P"                                        
+ * 
+ * 
+ * @author dev-ys-36
+ * @link https://github.com/dev-ys-36
+ * @license MIT LICENSE
+ * 
+ * 
+ * The copyright indication and this authorization indication shall be
+ * recorded in all copies or in important parts of the Software.
+ * 
+ * 
  */
 
 

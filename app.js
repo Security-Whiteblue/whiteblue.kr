@@ -11,6 +11,17 @@
  *                                     888                                       
  *                               Y8b d88P                                       
  *                                "Y88P"                                        
+ * 
+ * 
+ * @author dev-ys-36
+ * @link https://github.com/dev-ys-36
+ * @license MIT LICENSE
+ * 
+ * 
+ * The copyright indication and this authorization indication shall be
+ * recorded in all copies or in important parts of the Software.
+ * 
+ * 
  */
 
 
@@ -36,17 +47,18 @@ const expressSession = require('express-session');
 //const ejs = require('ejs');
 const bodyParser = require('body-parser');
 
-const fetch = require('node-fetch'); /** 2.6.6 */
-
-const requestIp = require('request-ip');
-
 const http = require('http');
 const https = require('https');
 
 const app = express();
 
-//import { options } from __dirname + '/setting/data.js';
+/**
+ * WARNING { DATA , LOGGER }
+ * This document should not be published as a security document.
+ */
+
 const data = require(__dirname + '/setting/data');
+const logger = require(__dirname + '/setting/logger');
 
 const indexjs = require(__dirname + '/router/index');
 const loginjs = require(__dirname + '/router/login');
@@ -57,40 +69,6 @@ const writejs = require(__dirname + '/router/write');
 
 const HTTP_PORT = 80;
 const HTTPS_PORT = 443;
-
-const getAsync = async(ip) => {
-	try{
-		const response = await fetch('http://ip-api.com/json/' + ip);
-		const json = await response.json();
-		console.log(time() + ' country: ' + json['country']);
-	}catch(err){
-		console.log(err);
-	}finally{
-		
-	}
-};
-
-const time = () => {
-	let today = new Date();
-
-	var year = today.getFullYear();
-	var month = ('0' + (today.getMonth() + 1)).slice(-2);
-	var day = ('0' + today.getDate()).slice(-2);
-	var date = year + '-' + month + '-' + day
-
-	var hours = ('0' + today.getHours()).slice(-2); 
-	var minutes = ('0' + today.getMinutes()).slice(-2);
-	var seconds = ('0' + today.getSeconds()).slice(-2);
-	var time = hours + ':' + minutes + ':' + seconds;
-
-	return '[' + date + ' ' + time + ']';
-};
-
-const log = (req) => {
-	console.log(time() + ' client IP: ' + requestIp.getClientIp(req));
-	console.log(time() + ' url: ' + req.url);
-	getAsync(requestIp.getClientIp(req));
-};
 
 app.use(expressSession({
 	secret: data.session_data(),
@@ -108,23 +86,20 @@ app.use(function(req, res, next){
 	if(!req.secure){
 		res.redirect('https://'+ 'whiteblue.kr' + req.url);
 	}else{
-		//log(req);
 		next();
 	}
 });
 
 app.use('/', express.static(__dirname + '/public'));
 
-//app.use('/', indexjs);
-
 app.get('/', function(req, res){
+	logger.userInfo(req);
 	res.render('index', {
 		session: req.session.user
 	});
-	console.log(req.session.user);
-	log(req);
 });
 
+//app.use('/', indexjs);
 
 app.use('/login', loginjs);
 
@@ -137,31 +112,33 @@ app.use('/write', writejs);
 app.use('/notice', noticejs);
 
 app.get('/profile', function(req, res){
+	logger.userInfo(req);
 	if (req.session.user){
 		res.render('profile', {
 			session: req.session.user
 		});
-		log(req);
 	}else{
 		res.redirect('/login');
 	}
 });
 
 app.get('/version', function(req, res){
+	logger.userInfo(req);
 	res.render('version', {
 		session: req.session.user
 	});
 });
 
 app.get('/404', function(req, res){
+	//logger.userInfo(req);
 	res.render('404', {
 		session: req.session.user
 	});
 });
 
 app.get('*', function(req, res){
+	logger.userInfo(req);
 	res.redirect('https://' + 'whiteblue.kr' + '/404');
-	log(req);
 });
 
 http.createServer(app).listen(HTTP_PORT, '0.0.0.0');

@@ -11,11 +11,17 @@
  *                                     888                                       
  *                               Y8b d88P                                       
  *                                "Y88P"                                        
- */
-
-
-/**
- * 보안 패치가 완료된 파일입니다.
+ * 
+ * 
+ * @author dev-ys-36
+ * @link https://github.com/dev-ys-36
+ * @license MIT LICENSE
+ * 
+ * 
+ * The copyright indication and this authorization indication shall be
+ * recorded in all copies or in important parts of the Software.
+ * 
+ * 
  */
 
 
@@ -23,9 +29,9 @@ const express = require('express');
 const router = express.Router();
 
 const mysql = require('mysql');
-const { isNumber } = require('util');
 
 const data = require('../setting/data');
+const logger = require('../setting/logger');
 
 //const connection = mysql.createConnection(data.mysql_data('notice'));
 // mysql.createConnection issue
@@ -46,6 +52,7 @@ connection.end();*/
 const pool = mysql.createPool(data.mysql_data('notice'));
 
 router.get('/', function(req, res){
+	logger.userInfo(req);
 	pool.getConnection(function(error, connection){
 		if (error) throw error;
 		var sql = 'SELECT * FROM user';// id값을 통하여 수정하려고 하는 특정 데이터만 불러온다.
@@ -60,6 +67,7 @@ router.get('/', function(req, res){
 });
 
 router.get('/:id', function(req, res){
+	logger.userInfo(req);
 	const id = req.params.id;
 	/*if (Number(id)){
 		res.send('<script type="text/javascript">alert("fail."); document.location.href="/";</script>');	

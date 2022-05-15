@@ -11,13 +11,27 @@
  *                                     888                                       
  *                               Y8b d88P                                       
  *                                "Y88P"                                        
+ * 
+ * 
+ * @author dev-ys-36
+ * @link https://github.com/dev-ys-36
+ * @license MIT LICENSE
+ * 
+ * 
+ * The copyright indication and this authorization indication shall be
+ * recorded in all copies or in important parts of the Software.
+ * 
+ * 
  */
 
 
 const express = require('express');
 const router = express.Router();
 
+const logger = require('../setting/logger');
+
 router.get('/', function(req, res){
+	logger.userInfo(req);
 	if (req.session.user){
 		req.session.destroy(function(err){
 			if(err){
@@ -28,7 +42,6 @@ router.get('/', function(req, res){
 			res.send('<script type="text/javascript">alert("logout success."); document.location.href="/";</script>');
 			res.end();
 		});
-		//log(req);
 	}else{
 		res.redirect('/login');
 	}
