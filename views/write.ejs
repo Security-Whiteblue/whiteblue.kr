@@ -32,20 +32,22 @@
 
 	<%-include('tags/header')%>
 
-	<!-- section -->
-	<section class="container">
-		<div class="row">
-			<div class="notice">
-				<form name="write_form" action="/write" method="post">
-					<span style="color: white;">제목: </span><input type="text" id="subject" name="subject">
-					<br>
-					<br>
-					<textarea id="summernote" name="editordata"></textarea>
-					<input type="submit" value="제출">
-				</form>
+	<div class="main">
+		<!-- section -->
+		<section class="container">
+			<div class="row">
+				<div class="notice">
+					<form name="write_form" action="/write" method="post">
+						<span style="color: white;">제목: </span><input type="text" id="subject" name="subject">
+						<br>
+						<br>
+						<textarea id="summernote" name="editordata"></textarea>
+						<input type="submit" value="제출">
+					</form>
+				</div>
 			</div>
-		</div>
-	</section>
+		</section>
+	</div>
 
 	<script>
 	$(document).ready(function(){

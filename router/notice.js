@@ -23,6 +23,7 @@ const express = require('express');
 const router = express.Router();
 
 const mysql = require('mysql');
+const { isNumber } = require('util');
 
 const data = require('../setting/data');
 
@@ -60,6 +61,11 @@ router.get('/', function(req, res){
 
 router.get('/:id', function(req, res){
 	const id = req.params.id;
+	/*if (Number(id)){
+		res.send('<script type="text/javascript">alert("fail."); document.location.href="/";</script>');	
+		res.end();
+		return;
+	}*/
 	pool.getConnection(function(error, connection){
 		if (error) throw error;
 		var sql = 'SELECT * FROM user WHERE id=?';// id값을 통하여 수정하려고 하는 특정 데이터만 불러온다.

@@ -27,18 +27,20 @@
 
 	<%-include('tags/header')%>
 
-	<!-- section -->
-	<section class="container">
-		<div class="row">
-			<div class="login">
-				Username: <%= session['name'] %>
-				<br>
-				Email: <%= session['email'] %>
-				<br>
-				Password: <%= session['pwd'] %>
+	<div class="main">
+		<!-- section -->
+		<section class="container">
+			<div class="row">
+				<div class="login">
+					Username: <%= session['name'] %>
+					<br>
+					Email: <%= session['email'] %>
+					<br>
+					Password: <%= session['pwd'] %>
+				</div>
 			</div>
-		</div>
-	</section>
+		</section>
+	</div>
 
 	<%-include('tags/footer')%>
 

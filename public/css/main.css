@@ -5,6 +5,50 @@
 .bolder     { font-weight: 800 }
 .light      { font-weight: 300 }
 
+.main {
+  padding-top: 60px;
+  padding-bottom: 120px;
+}
+
+.register_form, .login_form {
+  text-align: center;
+  padding: 20px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: white;
+  color: white;
+}
+
+.login_s {
+  margin-top: 20px;
+  text-align: center;
+}
+
+input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px #292929 inset;
+  box-shadow: 0 0 0 1000px #292929 inset;
+  -webkit-text-fill-color: #fff;
+}
+
+.login_btn, .register_btn {
+  border-width: 2px;
+  border-style: solid;
+  border-color: white;
+  margin-top: 50px;
+}
+
+.username, .email, .password {
+  border-bottom: 1px solid #fff;
+  background: transparent;
+}
+
+input {
+  background: transparent;
+  border: none;
+  padding: 10px 0;
+  color: white;
+}
+
 .note-editable{
   font-family: 'NanumSquare' !important;
 }
@@ -193,7 +237,7 @@ header {
   overflow: hidden;
   position: relative;
   padding-top: 80px;
-  padding-bottom: 180px;
+  padding-bottom: 140px;
 }
 header img {
   display: inline-block !important;
@@ -242,7 +286,7 @@ header hr {
 /* contact section */
 .contact {
   background: var(--contact-background-color);
- box-shadow: 0px 1px 5px rgba(50,50,50,0.08);
+  box-shadow: 0px 1px 5px rgba(50,50,50,0.08);
 }
 
 /* member section */
@@ -256,18 +300,11 @@ header hr {
 
 /* footer section */
 footer {
-  color: #f9f9f9;
+  color: #888;
   text-align: center;
-  padding-top: 140px;
-  padding-bottom: 20px;
-}
-
-/* login section */
-.login {
-  background: #3366CC;
-  text-align: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding-top: 70px;
+  padding-bottom: 10px;
+  background: #141414;
 }
 
 @media ( max-width: 360px ) {
