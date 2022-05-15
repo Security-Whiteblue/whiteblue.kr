@@ -26,21 +26,23 @@ const mysql = require('mysql');
 
 const data = require('../setting/data');
 
-const connection = mysql.createConnection(data.mysql_data('auth'));
+//const connection = mysql.createConnection(data.mysql_data('auth'));
 // mysql.createConnection issue
-connection.connect(function(err){
+/*connection.connect(function(err){
 	if (err){
 		console.error('error connecting: ' + err.stack);
 		return;
 	}
 	console.log('connected as id ' + connection.threadId);
-});
+});*/
 
 /*connection.query('SELECT * from user', (error, rows, fields) => {
 	if (error) throw error;
 	console.log('User info is: ', rows);
 });
 connection.end();*/
+
+const pool = mysql.createPool(data.mysql_data('auth'));
 
 router.get('/', function(req, res){
 	if (req.session.user){
@@ -55,23 +57,25 @@ router.get('/', function(req, res){
 router.post('/', function(req, res){
 	const { email, pwd } = req.body;
 	if (email && pwd){
-		connection.query('SELECT * FROM user WHERE email = ? AND password = ?', [email, pwd], function(error, results, fields){
+		pool.getConnection(function(error, connection){
 			if (error) throw error;
-			console.log(results);
-			if (results.length > 0){
-				req.session.user = {
-					email: email,
-					pwd: pwd,
-					name: 'no',
-					authorized: true
-				};
-				res.send('<script type="text/javascript">alert("login success."); document.location.href="/";</script>');
-				res.end();
-			}else{
-				res.send('<script type="text/javascript">alert("account does not match."); document.location.href="/login";</script>');
-			}
+			connection.query('SELECT * FROM user WHERE email = ? AND password = ?', [email, pwd], function(error, results, fields){
+				if (error) throw error;
+				console.log(results);
+				if (results.length > 0){
+					req.session.user = {
+						email: email,
+						pwd: pwd,
+						name: 'no',
+						authorized: true
+					};
+					res.send('<script type="text/javascript">alert("login success."); document.location.href="/";</script>');
+					res.end();
+				}else{
+					res.send('<script type="text/javascript">alert("account does not match."); document.location.href="/login";</script>');
+				}
+			});
 		});
-		//connection.end();
 	}else{		
 		res.send('<script type="text/javascript">alert("fail."); document.location.href="/login";</script>');	
 		res.end();

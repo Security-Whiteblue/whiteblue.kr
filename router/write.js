@@ -26,21 +26,23 @@ const mysql = require('mysql');
 
 const data = require('../setting/data');
 
-const connection = mysql.createConnection(data.mysql_data('notice'));
+//const connection = mysql.createConnection(data.mysql_data('notice'));
 // mysql.createConnection issue
-connection.connect(function(err){
+/*connection.connect(function(err){
 	if (err){
 		console.error('error connecting: ' + err.stack);
 		return;
 	}
 	console.log('connected as id ' + connection.threadId);
-});
+});*/
 
 /*connection.query('SELECT * from user', (error, rows, fields) => {
 	if (error) throw error;
 	console.log('User info is: ', rows);
 });
 connection.end();*/
+
+const pool = mysql.createPool(data.mysql_data('notice'));
 
 router.get('/', function(req, res){
 	if (req.session.user){
@@ -57,19 +59,21 @@ router.post('/', function(req, res){
 	const { subject, editordata, files } = req.body;
 	const username = 'admin';
 	if (editordata){
-		connection.query('SELECT * FROM user WHERE username = ? AND subject = ? AND txt = ?', [username, subject, editordata], function(error, results, fields){
+		pool.getConnection(function(error, connection){
 			if (error) throw error;
-			console.log(results)
-			if (results.length <= 0){
-				connection.query('INSERT INTO user (username, subject, txt) VALUES(?,?,?)', [username, subject, editordata], function(error, data){
-					if (error) throw error;
-					console.log(data);
-				});
-				res.send('<script type="text/javascript">alert("write success"); document.location.href="/";</script>');	
-			}		 
-			res.end();
+			connection.query('SELECT * FROM user WHERE username = ? AND subject = ? AND txt = ?', [username, subject, editordata], function(error, results, fields){
+				if (error) throw error;
+				console.log(results)
+				if (results.length <= 0){
+					connection.query('INSERT INTO user (username, subject, txt) VALUES(?,?,?)', [username, subject, editordata], function(error, data){
+						if (error) throw error;
+						console.log(data);
+					});
+					res.send('<script type="text/javascript">alert("write success"); document.location.href="/";</script>');	
+				}		 
+				res.end();
+			});
 		});
-		//connection.end();
 	}else{
 		res.send('<script type="text/javascript">alert("fail."); document.location.href="/login";</script>');	
 		res.end();
