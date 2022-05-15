@@ -33,6 +33,16 @@ const mysql = require('mysql');
 const data = require('../setting/data');
 const logger = require('../setting/logger');
 
+const isNumber = (num) => {
+	if (typeof num === 'number') {
+		return num - num === 0;
+	}
+	if (typeof num === 'string' && num.trim() !== ''){
+		return Number.isFinite ? Number.isFinite(+num) : isFinite(+num);
+	}
+	return false;
+};
+
 //const connection = mysql.createConnection(data.mysql_data('notice'));
 // mysql.createConnection issue
 /*connection.connect(function(err){
@@ -69,29 +79,29 @@ router.get('/', function(req, res){
 router.get('/:id', function(req, res){
 	logger.userInfo(req);
 	const id = req.params.id;
-	/*if (Number(id)){
-		res.send('<script type="text/javascript">alert("fail."); document.location.href="/";</script>');	
+	if (!isNumber(id)){
+		res.send('<script type="text/javascript">alert("only number."); document.location.href="/";</script>');	
 		res.end();
-		return;
-	}*/
-	pool.getConnection(function(error, connection){
-		if (error) throw error;
-		var sql = 'SELECT * FROM user WHERE id=?';// id값을 통하여 수정하려고 하는 특정 데이터만 불러온다.
-		connection.query(sql, [id], function(error, results, fields){
+	}else{
+		pool.getConnection(function(error, connection){
 			if (error) throw error;
-			console.log(results);
-			if (results.length > 0){
-				res.render('notice_', {
-					session: req.session.user,
-					subject: results[0].subject,
-					html: results[0].txt
-				});
-			}else{
-				res.send('<script type="text/javascript">alert("fail."); document.location.href="/";</script>');	
-				res.end();
-			}
+			var sql = 'SELECT * FROM user WHERE id=?';// id값을 통하여 수정하려고 하는 특정 데이터만 불러온다.
+			connection.query(sql, [id], function(error, results, fields){
+				if (error) throw error;
+				console.log(results);
+				if (results.length > 0){
+					res.render('notice_', {
+						session: req.session.user,
+						subject: results[0].subject,
+						html: results[0].txt
+					});
+				}else{
+					res.send('<script type="text/javascript">alert("fail."); document.location.href="/";</script>');	
+					res.end();
+				}
+			});
 		});
-	});
+	}
 });
 
 module.exports = router;
