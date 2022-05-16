@@ -68,7 +68,7 @@ router.get('/', function(req, res){
 		var sql = 'SELECT * FROM user';// id값을 통하여 수정하려고 하는 특정 데이터만 불러온다.
 		connection.query(sql, function(error, results, fields){
 			if (error) throw error;
-			res.render('notice', {
+			res.render('notice/notice', {
 				session: req.session.user,
 				results: results
 			});
@@ -91,7 +91,7 @@ router.get('/:id', function(req, res){
 				if (error) throw error;
 				console.log(results);
 				if (results.length > 0){
-					res.render('notice_', {
+					res.render('notice/read', {
 						session: req.session.user,
 						subject: results[0].subject,
 						html: results[0].txt

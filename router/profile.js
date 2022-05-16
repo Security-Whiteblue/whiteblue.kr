@@ -32,9 +32,13 @@ const logger = require('../setting/logger');
 
 router.get('/', function(req, res){
 	logger.userInfo(req);
-	res.render('index', {
-		session: req.session.user
-	});
+	if (req.session.user){
+		res.render('profile', {
+			session: req.session.user
+		});
+	}else{
+		res.redirect('/login');
+	}
 });
 
 module.exports = router;

@@ -44,11 +44,9 @@ console.log('Base64 Decoded Text: ', base64DecodedText);*/
 
 const express = require('express');
 const expressSession = require('express-session');
+
 //const ejs = require('ejs');
 const bodyParser = require('body-parser');
-
-const http = require('http');
-const https = require('https');
 
 const app = express();
 
@@ -56,16 +54,22 @@ const app = express();
  * WARNING { DATA , LOGGER }
  * This document should not be published as a security document.
  */
-
 const data = require(__dirname + '/setting/data');
 const logger = require(__dirname + '/setting/logger');
 
 const indexjs = require(__dirname + '/router/index');
+
 const loginjs = require(__dirname + '/router/login');
 const logoutjs = require(__dirname + '/router/logout');
 const registerjs = require(__dirname + '/router/register');
+
 const noticejs = require(__dirname + '/router/notice');
 const writejs = require(__dirname + '/router/write');
+
+const profilejs = require(__dirname + '/router/profile');;
+
+const http = require('http');
+const https = require('https');
 
 const HTTP_PORT = 80;
 const HTTPS_PORT = 443;
@@ -73,18 +77,24 @@ const HTTPS_PORT = 443;
 app.use(expressSession({
 	secret: data.session_data(),
 	resave: false,
-	saveUninitialized: true
+	saveUninitialized: true,
+	cookie: {
+		secure: true,
+		maxAge: 1000 * 60 * 60 * 6
+	}
 }));
 
 app.set('view engine', 'ejs');
-app.set('views', './views');
+app.set('views', __dirname + '/views');
 
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+	extended: false
+}));
 
 app.use(function(req, res, next){
-	if(!req.secure){
-		res.redirect('https://'+ 'whiteblue.kr' + req.url);
+	if (!req.secure){
+		res.redirect('https://whiteblue.kr' + req.url);
 	}else{
 		next();
 	}
@@ -92,14 +102,7 @@ app.use(function(req, res, next){
 
 app.use('/', express.static(__dirname + '/public'));
 
-app.get('/', function(req, res){
-	logger.userInfo(req);
-	res.render('index', {
-		session: req.session.user
-	});
-});
-
-//app.use('/', indexjs);
+app.use('/', indexjs);
 
 app.use('/login', loginjs);
 
@@ -111,23 +114,14 @@ app.use('/write', writejs);
 
 app.use('/notice', noticejs);
 
-app.get('/profile', function(req, res){
-	logger.userInfo(req);
-	if (req.session.user){
-		res.render('profile', {
-			session: req.session.user
-		});
-	}else{
-		res.redirect('/login');
-	}
-});
+app.use('/profile', profilejs);
 
-app.get('/version', function(req, res){
+/*app.get('/version', function(req, res){
 	logger.userInfo(req);
 	res.render('version', {
 		session: req.session.user
 	});
-});
+});*/
 
 app.get('/404', function(req, res){
 	//logger.userInfo(req);
@@ -138,9 +132,8 @@ app.get('/404', function(req, res){
 
 app.get('*', function(req, res){
 	logger.userInfo(req);
-	res.redirect('https://' + 'whiteblue.kr' + '/404');
+	res.redirect('/404');
 });
 
 http.createServer(app).listen(HTTP_PORT, '0.0.0.0');
-
 https.createServer(data.ssl_options(), app).listen(HTTPS_PORT, '0.0.0.0');

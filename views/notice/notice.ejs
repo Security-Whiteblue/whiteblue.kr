@@ -21,26 +21,44 @@
 </head>
 <body data-spy="scroll" data-target=".navbar-collapse">
 
-	<%-include('tags/alert')%>
+	<%-include('../tags/alert')%>
 
-	<%-include('tags/nav')%>
+	<%-include('../tags/nav')%>
 
-	<%-include('tags/header')%>
+	<%-include('../tags/header')%>
 
 	<div class="main">
 		<!-- section -->
 		<section class="container">
 			<div class="row">
 				<div class="notice" style="color: white;">
-					<%= subject %>
-					<hr>
-					<%- html %>
+					<table class="table table-hover" style="color: white;">
+						<thead>
+							<tr>
+								<th scope="col" style="width: 5%;">#</th>
+								<th scope="col">제목</th>
+								<th scope="col" style="width: 15%;">작성자</th>
+								<th scope="col" style="width: 15%;">조회수</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% results.forEach((currentElement, index, array) => { %>
+								<% url = 'https://whiteblue.kr/notice/' + array[index].id; %>
+								<tr onClick="location.href='<%= url %>'">
+									<th scope="row"><%= array[index].id %></th>
+									<td><%= array[index].subject %></td>
+									<td><%= array[index].username %></td>
+									<td>0</td>
+								</tr>
+							<% }); %>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</section>
 	</div>
 
-	<%-include('tags/footer')%>
+	<%-include('../tags/footer')%>
 
 </body>
 </html>

@@ -20,47 +20,41 @@
 	<link rel="stylesheet" href="css/main.css">
 	<script type="text/javascript">
 		function check(id){
-			if (id.usr.value.length == 0){ alert("Username spaces."); id.usr.focus(); return false; }
 			if (id.email.value.length == 0){ alert("Email spaces."); id.email.focus(); return false; }
 			if (id.pwd.value.length == 0){ alert("Password spaces."); id.pwd.focus(); return false; }
-			if (id.pwdc.value.length == 0){ alert("re-enter Password spaces."); id.pwdc.focus(); return false; }
-			if (id.pwd.value != id.pwdc.value){ alert("Password does not match."); id.pwdc.focus(); return false; }
 		}
 	</script>
 </head>
 <body data-spy="scroll" data-target=".navbar-collapse">
 	
-	<%-include('tags/alert')%>
+	<%-include('../tags/alert')%>
 
-	<%-include('tags/nav')%>
+	<%-include('../tags/nav')%>
 
-	<%-include('tags/header')%>
-
+	<%-include('../tags/header')%>
+	
 	<div class="main">
-		<!-- register section -->
-		<section class="register">
+		<!-- login section -->
+		<section class="login">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-6 offset-md-3">
-						<div class="register_form">
-							<p>회원가입</p>
-							<form name="register_form" action="/register" method="post" onsubmit="return check(this)">
-								<div class="username">
-									<i class="bi bi-person-plus"></i>&nbsp;&nbsp;<input type="text" name="usr" id="usr" placeholder="Username" style="width: 85%;">
-								</div>
+						<div class="login_form">
+							<p>로그인</p>
+							<form name="login_form" action="/login" method="post" onsubmit="return check(this)">
 								<div class="email">
 									<i class="bi bi-envelope"></i>&nbsp;&nbsp;<input type="email" name="email" id="email" placeholder="Email" style="width: 85%;">
 								</div>
 								<div class="password">
 									<i class="bi bi-file-lock"></i>&nbsp;&nbsp;<input type="password" name="pwd" id="pwd" placeholder="Password" style="width: 85%;">
 								</div>
-								<div class="password">
-									<i class="bi bi-file-lock"></i>&nbsp;&nbsp;<input type="password" name="pwdc" id="pwdc" placeholder="re-enter Password" style="width: 85%;">
-								</div>
-								<div class="register_btn">
-									<input type="submit" value="회원가입" style="width: 100%;">
+								<div class="login_btn">
+									<input type="submit" value="로그인" style="width: 100%;">
 								</div>
 							</form>
+						</div>
+						<div class="login_s">
+							<a href="https://whiteblue.kr/register" style="color: #888; text-decoration: none;">회원가입</a>
 						</div>
 					</div>
 				</div>
@@ -68,7 +62,7 @@
 		</section>
 	</div>
 
-	<%-include('tags/footer')%>
+	<%-include('../tags/footer')%>
 	
 </body>
 </html>

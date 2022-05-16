@@ -56,7 +56,7 @@ router.get('/', function(req, res){
 	if (req.session.user){
 		res.redirect('/');
 	}else{
-		res.render('login', {
+		res.render('auth/login', {
 			session: req.session.user
 		});
 	}
