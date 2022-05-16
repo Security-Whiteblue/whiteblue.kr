@@ -53,8 +53,8 @@ const pool = mysql.createPool(data.mysql_data('auth'));
 
 router.get('/', function(req, res){
 	logger.userInfo(req);
-	if (req.session.user){
-		res.render('write', {
+	if (!req.session.user){
+		res.render('register', {
 			session: req.session.user
 		});
 		console.log(req.session.user);
