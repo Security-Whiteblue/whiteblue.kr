@@ -30,28 +30,72 @@ const router = express.Router();
 
 const mysql = require('mysql');
 
-const data = require('../setting/data');
-const logger = require('../setting/logger');
+const data = require('../../setting/data');
+const logger = require('../../setting/logger');
 
-//const connection = mysql.createConnection(data.mysql_data('notice'));
-// mysql.createConnection issue
-/*connection.connect(function(err){
-	if (err){
-		console.error('error connecting: ' + err.stack);
-		return;
+const isNumber = (num) => {
+	if (typeof num === 'number'){
+		return num - num === 0;
 	}
-	console.log('connected as id ' + connection.threadId);
-});*/
-
-/*connection.query('SELECT * from user', (error, rows, fields) => {
-	if (error) throw error;
-	console.log('User info is: ', rows);
-});
-connection.end();*/
+	if (typeof num === 'string' && num.trim() !== ''){
+		return Number.isFinite ? Number.isFinite(+num) : isFinite(+num);
+	}
+	return false;
+};
 
 const pool = mysql.createPool(data.mysql_data('notice'));
 
+/**
+ * ../notice			{GET}
+ * ../notice/read/id	{GET}
+ * ../notice/write		{GET, POST}
+ */
+
 router.get('/', function(req, res){
+	logger.userInfo(req);
+	pool.getConnection(function(error, connection){
+		if (error) throw error;
+		var sql = 'SELECT * FROM user';// id값을 통하여 수정하려고 하는 특정 데이터만 불러온다.
+		connection.query(sql, function(error, results, fields){
+			if (error) throw error;
+			res.render('notice/notice', {
+				session: req.session.user,
+				results: results
+			});
+		});
+		connection.release();
+	});
+});
+
+router.get('/read/:id', function(req, res){
+	logger.userInfo(req);
+	const id = req.params.id;
+	if (!isNumber(id)){
+		res.send('<script type="text/javascript">alert("only number."); document.location.href="/";</script>');	
+		res.end();
+	}else{
+		pool.getConnection(function(error, connection){
+			if (error) throw error;
+			var sql = 'SELECT * FROM user WHERE id=?';// id값을 통하여 수정하려고 하는 특정 데이터만 불러온다.
+			connection.query(sql, [id], function(error, results, fields){
+				if (error) throw error;
+				console.log(results);
+				if (results.length > 0){
+					res.render('notice/read', {
+						session: req.session.user,
+						subject: results[0].subject,
+						html: results[0].txt
+					});
+				}else{
+					res.send('<script type="text/javascript">alert("fail."); document.location.href="/";</script>');	
+					res.end();
+				}
+			});
+		});
+	}
+});
+
+router.get('/write', function(req, res){
 	logger.userInfo(req);
 	if (req.session.user){
 		res.render('notice/write', {
@@ -59,11 +103,11 @@ router.get('/', function(req, res){
 		});
 		console.log(req.session.user);
 	}else{
-		res.redirect('/login');
+		res.redirect('/auth/login');
 	}
 });
 
-router.post('/', function(req, res){
+router.post('/write', function(req, res){
 	logger.userInfo(req);
 	const { subject, editordata, files } = req.body;
 	const username = 'admin';
@@ -85,7 +129,7 @@ router.post('/', function(req, res){
 			connection.release();
 		});
 	}else{
-		res.send('<script type="text/javascript">alert("fail."); document.location.href="/login";</script>');	
+		res.send('<script type="text/javascript">alert("fail."); document.location.href="/auth/login";</script>');	
 		res.end();
 	}
 });

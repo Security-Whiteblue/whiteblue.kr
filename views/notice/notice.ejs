@@ -43,7 +43,7 @@
 						</thead>
 						<tbody>
 							<% results.forEach((currentElement, index, array) => { %>
-								<% url = 'https://whiteblue.kr/notice/' + array[index].id; %>
+								<% url = 'https://whiteblue.kr/notice/read/' + array[index].id; %>
 								<tr onClick="location.href='<%= url %>'">
 									<th scope="row"><%= array[index].id %></th>
 									<td><%= array[index].subject %></td>

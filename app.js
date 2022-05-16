@@ -59,12 +59,9 @@ const logger = require(__dirname + '/setting/logger');
 
 const indexjs = require(__dirname + '/router/index');
 
-const loginjs = require(__dirname + '/router/login');
-const logoutjs = require(__dirname + '/router/logout');
-const registerjs = require(__dirname + '/router/register');
+const authjs = require(__dirname + '/router/auth/auth');
 
-const noticejs = require(__dirname + '/router/notice');
-const writejs = require(__dirname + '/router/write');
+const noticejs = require(__dirname + '/router/notice/notice');
 
 const profilejs = require(__dirname + '/router/profile');;
 
@@ -104,13 +101,7 @@ app.use('/', express.static(__dirname + '/public'));
 
 app.use('/', indexjs);
 
-app.use('/login', loginjs);
-
-app.use('/logout', logoutjs);
-
-app.use('/register', registerjs);
-
-app.use('/write', writejs);
+app.use('/auth', authjs);
 
 app.use('/notice', noticejs);
 

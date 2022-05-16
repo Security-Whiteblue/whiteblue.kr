@@ -16,22 +16,22 @@
             <% if (session){ %>
                 <% if (session !== undefined){ %>
                     <li class="nav-item">
-                        <a class="nav-link" href="https://whiteblue.kr/write" style="color:#ffffff">글쓰기</a>
+                        <a class="nav-link" href="https://whiteblue.kr/notice/write" style="color:#ffffff">글쓰기</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="https://whiteblue.kr/profile" style="color:#ffffff">내정보</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="https://whiteblue.kr/logout" style="color:#ffffff">로그아웃</a>
+                        <a class="nav-link" href="https://whiteblue.kr/auth/logout" style="color:#ffffff">로그아웃</a>
                     </li>
                 <% }else{ %>
                     <li class="nav-item">
-                        <a class="nav-link" href="https://whiteblue.kr/login" style="color:#ffffff">로그인</a>
+                        <a class="nav-link" href="https://whiteblue.kr/auth/login" style="color:#ffffff">로그인</a>
                     </li>
                 <% } %>
             <% }else{ %>
                 <li class="nav-item">
-                    <a class="nav-link" href="https://whiteblue.kr/login" style="color:#ffffff">로그인</a>
+                    <a class="nav-link" href="https://whiteblue.kr/auth/login" style="color:#ffffff">로그인</a>
                 </li>
             <% } %>
         </ul>

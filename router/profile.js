@@ -37,7 +37,7 @@ router.get('/', function(req, res){
 			session: req.session.user
 		});
 	}else{
-		res.redirect('/login');
+		res.redirect('/auth/login');
 	}
 });
 
