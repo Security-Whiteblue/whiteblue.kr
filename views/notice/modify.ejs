@@ -37,17 +37,17 @@
 		<section class="container">
 			<div class="row">
 				<div class="notice">
-					<p>게시판 작성</p>
-					<form name="write_form" action="/notice/write" method="post">
-						<div class="subject">
-							<span style="color: white;">제목:</span><input type="text" id="subject" name="subject" style="width: 85%;">
-						</div>
+                    <p>게시판 수정</p>
+					<form name="write_form" action="/notice/modify" method="post">
+                        <div class="subject">
+                            <span style="color: white;">제목:</span><input type="text" id="subject" name="subject" style="width: 85%;" value="<%= subject %>">
+                        </div>
 						<br>
 						<br>
-						<textarea id="summernote" name="editordata"></textarea>
-						<div class="notice_btn">
-							<input type="submit" value="제출" style="width: 100%;">
-						</div>
+						<textarea id="summernote" name="editordata"><%= html %></textarea>
+                        <div class="notice_btn">
+                            <input type="submit" value="제출" style="width: 100%;">
+                        </div>
 					</form>
 				</div>
 			</div>

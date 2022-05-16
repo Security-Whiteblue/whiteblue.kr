@@ -71,6 +71,67 @@ router.get('/', function(req, res){
 	});
 });
 
+router.post('/modify', function(req, res){
+	logger.userInfo(req);
+	const { subject, editordata, files } = req.body;
+	const username = 'admin';
+	const id = req.session.ids;
+	if (editordata){
+		pool.getConnection(function(error, connection){
+			if (error) throw error;
+			var sql = 'SELECT * FROM user WHERE id=?';// id값을 통하여 수정하려고 하는 특정 데이터만 불러온다.
+			connection.query(sql, [id], function(error, results, fields){
+				if (error) throw error;
+				console.log(results);
+				if (results.length > 0){
+					connection.query('UPDATE user SET subject = ?, txt = ? WHERE id = ?', [subject, editordata, id], function(error, data){
+						if (error) throw error;
+						console.log(data);
+						res.send('<script type="text/javascript">alert("modify success"); document.location.href="/";</script>');
+						res.end();
+					});
+				}else{
+					res.send('<script type="text/javascript">alert("fail."); document.location.href="/";</script>');	
+					res.end();
+				}
+			});
+			connection.release();
+		});
+	}else{
+		res.send('<script type="text/javascript">alert("fail."); document.location.href="/auth/login";</script>');	
+		res.end();
+	}
+});
+
+router.get('/modify/:id', function(req, res){
+	logger.userInfo(req);
+	const id = req.params.id;
+	req.session.ids = id; // notice id
+	if (!isNumeric(id)){
+		res.send('<script type="text/javascript">alert("only number."); document.location.href="/";</script>');	
+		res.end();
+	}else{
+		pool.getConnection(function(error, connection){
+			if (error) throw error;
+			var sql = 'SELECT * FROM user WHERE id=?';// id값을 통하여 수정하려고 하는 특정 데이터만 불러온다.
+			connection.query(sql, [id], function(error, results, fields){
+				if (error) throw error;
+				console.log(results);
+				if (results.length > 0){
+					res.render('notice/modify', {
+						session: req.session.user,
+						subject: results[0].subject,
+						html: results[0].txt
+					});
+				}else{
+					res.send('<script type="text/javascript">alert("fail."); document.location.href="/";</script>');	
+					res.end();
+				}
+			});
+		});
+	}
+});
+
 router.get('/read/:id', function(req, res){
 	logger.userInfo(req);
 	const id = req.params.id;

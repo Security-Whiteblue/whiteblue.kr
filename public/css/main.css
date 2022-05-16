@@ -30,14 +30,14 @@ input:-webkit-autofill {
   -webkit-text-fill-color: #fff;
 }
 
-.login_btn, .register_btn {
+.login_btn, .register_btn, .notice_btn {
   border-width: 2px;
   border-style: solid;
   border-color: white;
   margin-top: 50px;
 }
 
-.username, .email, .password {
+.username, .email, .password, .subject {
   border-bottom: 1px solid #fff;
   background: transparent;
 }
@@ -58,10 +58,12 @@ input {
 }
 
 .notice{
+  text-align: center;
+  padding: 20px;
   border-width: 2px;
   border-style: solid;
   border-color: white;
-  padding: 20px;
+  color: white;
 }
 
 .table{
