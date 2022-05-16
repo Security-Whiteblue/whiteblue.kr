@@ -31,17 +31,6 @@
  */
 
 
-/*originText = 'TEST_KEY';
-
-// base64 encoding
-base64EncodedText = Buffer.from(originText, 'utf8').toString('base64');
-console.log('Base64 Encoded Text: ', base64EncodedText);
-
-// base decoding
-base64DecodedText = Buffer.from(base64EncodedText, 'base64').toString('utf8');
-console.log('Base64 Decoded Text: ', base64DecodedText);*/
-
-
 const express = require('express');
 const expressSession = require('express-session');
 
@@ -51,7 +40,7 @@ const bodyParser = require('body-parser');
 const app = express();
 
 /**
- * WARNING { DATA , LOGGER }
+ * WARNING { DATA }
  * This document should not be published as a security document.
  */
 const data = require(__dirname + '/setting/data');
@@ -128,3 +117,5 @@ app.get('*', function(req, res){
 
 http.createServer(app).listen(HTTP_PORT, '0.0.0.0');
 https.createServer(data.ssl_options(), app).listen(HTTPS_PORT, '0.0.0.0');
+
+logger.logo();
