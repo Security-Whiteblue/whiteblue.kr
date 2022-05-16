@@ -71,22 +71,23 @@ router.post('/', function(req, res){
 			if (error) throw error;
 			connection.query('SELECT * FROM user WHERE username = ? AND password = ? AND email = ?', [usr, pwd, email], function(error, results, fields){
 				if (error) throw error;
-				if (results.length <= 0 && pwd==pwdc){
+				if (results.length <= 0 && pwd == pwdc){
 					connection.query('INSERT INTO user (username, password, email) VALUES(?,?,?)', [usr, pwd, email], function (error, data){
 						if (error) throw error;
 						console.log(data);
 					});
-					res.send('<script type="text/javascript">alert("register success"); document.location.href="/";</script>');	
-				}else if(pwd!=pwdc){				
-					res.send('<script type="text/javascript">alert("password does not match."); document.location.href="/register";</script>');	
+					res.send('<script type="text/javascript">alert("register success"); document.location.href="/";</script>');
+				}else if(pwd != pwdc){			
+					res.send('<script type="text/javascript">alert("password does not match."); document.location.href="/register";</script>');
 				}else{
-					res.send('<script type="text/javascript">alert("email already."); document.location.href="/register";</script>');	
-				}			
+					res.send('<script type="text/javascript">alert("email already."); document.location.href="/register";</script>');
+				}
 				res.end();
 			});
+			connection.release();
 		});
-	} else {
-		res.send('<script type="text/javascript">alert("fail."); document.location.href="/register";</script>');	
+	}else{
+		res.send('<script type="text/javascript">alert("fail."); document.location.href="/register";</script>');
 		res.end();
 	}
 	console.log(req.body);

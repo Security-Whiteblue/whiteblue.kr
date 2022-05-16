@@ -73,6 +73,7 @@ router.get('/', function(req, res){
 				results: results
 			});
 		});
+		connection.release();
 	});
 });
 

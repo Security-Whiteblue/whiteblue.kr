@@ -84,6 +84,7 @@ router.post('/', function(req, res){
 					res.send('<script type="text/javascript">alert("account does not match."); document.location.href="/login";</script>');
 				}
 			});
+			connection.release();
 		});
 	}else{		
 		res.send('<script type="text/javascript">alert("fail."); document.location.href="/login";</script>');	

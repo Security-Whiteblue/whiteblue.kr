@@ -82,6 +82,7 @@ router.post('/', function(req, res){
 				}		 
 				res.end();
 			});
+			connection.release();
 		});
 	}else{
 		res.send('<script type="text/javascript">alert("fail."); document.location.href="/login";</script>');	
