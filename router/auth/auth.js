@@ -34,8 +34,8 @@ const mysql = require('mysql');
  * WARNING { DATA }
  * This document should not be published as a security document.
  */
-const data = require('../../setting/data');
-const logger = require('../../setting/logger');
+const data = require('../../utils/data');
+const logger = require('../../utils/logger');
 
 const pool = mysql.createPool(data.mysql_data('auth'));
 

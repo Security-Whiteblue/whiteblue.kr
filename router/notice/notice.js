@@ -34,15 +34,15 @@ const mysql = require('mysql');
  * WARNING { DATA }
  * This document should not be published as a security document.
  */
-const data = require('../../setting/data');
-const logger = require('../../setting/logger');
+const data = require('../../utils/data');
+const logger = require('../../utils/logger');
 
-const isNumber = (num) => {
-	if (typeof num === 'number'){
-		return num - num === 0;
+const isNumeric = (value) => {
+	if (typeof value === 'number'){
+		return value - value === 0;
 	}
-	if (typeof num === 'string' && num.trim() !== ''){
-		return Number.isFinite ? Number.isFinite(+num) : isFinite(+num);
+	if (typeof value === 'string' && value.trim() !== ''){
+		return Number.isFinite ? Number.isFinite(+value) : isFinite(+value);
 	}
 	return false;
 };
@@ -74,7 +74,7 @@ router.get('/', function(req, res){
 router.get('/read/:id', function(req, res){
 	logger.userInfo(req);
 	const id = req.params.id;
-	if (!isNumber(id)){
+	if (!isNumeric(id)){
 		res.send('<script type="text/javascript">alert("only number."); document.location.href="/";</script>');	
 		res.end();
 	}else{

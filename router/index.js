@@ -28,7 +28,7 @@
 const express = require('express');
 const router = express.Router();
 
-const logger = require('../setting/logger');
+const logger = require('../utils/logger');
 
 router.get('/', function(req, res){
 	logger.userInfo(req);

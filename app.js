@@ -43,8 +43,8 @@ const app = express();
  * WARNING { DATA }
  * This document should not be published as a security document.
  */
-const data = require(__dirname + '/setting/data');
-const logger = require(__dirname + '/setting/logger');
+const data = require(__dirname + '/utils/data');
+const logger = require(__dirname + '/utils/logger');
 
 const indexjs = require(__dirname + '/router/index');
 
