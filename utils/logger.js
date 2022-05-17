@@ -25,21 +25,38 @@
  */
 
 
+const fs = require('fs');
+
 const fetch = require('node-fetch'); /** 2.6.6 */
 
 const requestIp = require('request-ip');
 
 const VERSION = '2.1v';
 
+const log = (content) => {
+	var path =  './log.txt';
+
+	if (!fs.existsSync(path)){
+		fs.open(path, 'w', function(error, fd){
+			if (error) throw error;
+		});
+	}
+
+	fs.appendFile(path, content + "\n", function(error){
+		if (error) throw error;
+	});
+};
+
 const getAsync = async(ip) => {
 	try{
 		const response = await fetch('http://ip-api.com/json/' + ip);
 		const json = await response.json();
-		console.log(time() + ' country: ' + json['country']);
-	}catch(err){
-		console.log(err);
+		const log1 = time() + ' country: ' + json['country'];
+		log(log1);
+		console.log(log1);
+	}catch(error){
+		console.log(error);
 	}finally{
-		
 	}
 };
 
@@ -75,8 +92,12 @@ const logo = () => {
 };
 
 const userInfo = (req) => {
-	console.log(time() + ' client IP: ' + requestIp.getClientIp(req));
-	console.log(time() + ' url: ' + req.originalUrl);
+	var log1 = time() + ' client IP: ' + requestIp.getClientIp(req);
+	var log2 = time() + ' url: ' + req.originalUrl;
+	console.log(log1);
+	console.log(log2);
+	log(log1);
+	log(log2);
 	getAsync(requestIp.getClientIp(req));
 };
 

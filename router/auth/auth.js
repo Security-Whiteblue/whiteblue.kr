@@ -89,8 +89,8 @@ router.post('/login', function(req, res){
 router.get('/logout', function(req, res){
 	logger.userInfo(req);
 	if (req.session.user){
-		req.session.destroy(function(err){
-			if(err){
+		req.session.destroy(function(error){
+			if(error){
 				console.log('세션 삭제 에러');
 				return;
 			}
