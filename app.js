@@ -98,16 +98,12 @@ app.use('/profile', profilejs);
 
 /*app.get('/version', function(req, res){
 	logger.userInfo(req);
-	res.render('version', {
-		session: req.session.user
-	});
+	res.render('version');
 });*/
 
 app.get('/404', function(req, res){
 	//logger.userInfo(req);
-	res.render('404', {
-		session: req.session.user
-	});
+	res.render('404');
 });
 
 app.get('*', function(req, res){

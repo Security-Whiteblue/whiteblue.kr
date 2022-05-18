@@ -39,80 +39,85 @@ const logger = require('../../utils/logger');
 
 const pool = mysql.createPool(data.mysql_data('auth'));
 
+const html = (content, url) => {
+	return '<script type="text/javascript">alert("' + content + '"); document.location.href="' + url + '";</script>';
+};
+
 /**
  * ../auth/login			{GET, POST}
- * ../auth/logout	        {GET}
- * ../auth/register		    {GET, POST}
+ * ../auth/logout			{GET}
+ * ../auth/register			{GET, POST}
  */
 
 router.get('/login', function(req, res){
 	logger.userInfo(req);
-	if (req.session.user){
-		res.redirect('/');
-	}else{
-		res.render('auth/login', {
-			session: req.session.user
-		});
+
+	if (typeof(req.session.user) === 'undefined'){
+		res.render('auth/login');
+		return;
 	}
+
+	res.redirect('/');
 });
 
 router.post('/login', function(req, res){
 	logger.userInfo(req);
+
 	const { email, pwd } = req.body;
+
 	if (email && pwd){
 		pool.getConnection(function(error, connection){
 			if (error) throw error;
+
 			connection.query('SELECT * FROM user WHERE email = ? AND password = ?', [email, pwd], function(error, results, fields){
 				if (error) throw error;
-				console.log(results);
-				if (results.length > 0){
-					req.session.user = {
-						email: email,
-						pwd: pwd,
-						name: 'no',
-						authorized: true
-					};
-					res.send('<script type="text/javascript">alert("login success."); document.location.href="/";</script>');
-					res.end();
-				}else{
-					res.send('<script type="text/javascript">alert("account does not match."); document.location.href="/login";</script>');
+
+				if (results.length <= 0){
+					res.send(html('account does not match.', '/auth/login'));
+					return;
 				}
+
+				req.session.user = {
+					id: results[0].id,
+					username: results[0].username,
+					password: results[0].password,
+					email: results[0].email
+				};
+
+				res.send(html('login success.', '/'));
 			});
+
 			connection.release();
 		});
-	}else{		
-		res.send('<script type="text/javascript">alert("fail."); document.location.href="/login";</script>');	
-		res.end();
+	}else{
+		res.send(html('fail.', '/auth/login'));
 	}
 });
 
 router.get('/logout', function(req, res){
 	logger.userInfo(req);
-	if (req.session.user){
-		req.session.destroy(function(error){
-			if(error){
-				console.log('세션 삭제 에러');
-				return;
-			}
-			console.log('세션 삭제 성공');
-			res.send('<script type="text/javascript">alert("logout success."); document.location.href="/";</script>');
-			res.end();
-		});
-	}else{
+
+	if (typeof(req.session.user) === 'undefined'){
 		res.redirect('/auth/login');
+		return;
 	}
+
+	req.session.destroy(function(error){
+		if (error) throw error;
+		
+		res.send(html('logout success.', '/'));
+	});
 });
 
 router.get('/register', function(req, res){
 	logger.userInfo(req);
-	if (!req.session.user){
-		res.render('auth/register', {
-			session: req.session.user
-		});
-		console.log(req.session.user);
-	}else{
+
+	if (typeof(req.session.user) !== 'undefined'){
 		res.redirect('/');
+		return;
 	}
+	
+	res.render('auth/register');
 });
 
 router.post('/register', function(req, res){
@@ -142,10 +147,6 @@ router.post('/register', function(req, res){
 		res.send('<script type="text/javascript">alert("fail."); document.location.href="/auth/register";</script>');
 		res.end();
 	}
-	console.log(req.body);
-	console.log(usr);
-	console.log(email);
-	console.log(pwd);
 });
 
 module.exports = router;

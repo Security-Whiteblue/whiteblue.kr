@@ -13,22 +13,16 @@
             <li class="nav-item">
                 <a class="nav-link" href="https://whiteblue.kr/notice" style="color:#ffffff">공지사항</a>
             </li>
-            <% if (session){ %>
-                <% if (session !== undefined){ %>
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://whiteblue.kr/notice/write" style="color:#ffffff">글쓰기</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://whiteblue.kr/profile" style="color:#ffffff">내정보</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://whiteblue.kr/auth/logout" style="color:#ffffff">로그아웃</a>
-                    </li>
-                <% }else{ %>
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://whiteblue.kr/auth/login" style="color:#ffffff">로그인</a>
-                    </li>
-                <% } %>
+            <% if (typeof(session) !== 'undefined'){ %>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://whiteblue.kr/notice/write" style="color:#ffffff">글쓰기</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://whiteblue.kr/profile" style="color:#ffffff">내정보</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://whiteblue.kr/auth/logout" style="color:#ffffff">로그아웃</a>
+                </li>
             <% }else{ %>
                 <li class="nav-item">
                     <a class="nav-link" href="https://whiteblue.kr/auth/login" style="color:#ffffff">로그인</a>
