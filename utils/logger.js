@@ -33,8 +33,19 @@ const requestIp = require('request-ip');
 
 const VERSION = '2.1v';
 
+const info = (content) => {
+	log(content);
+	console.log(content);
+}
+
 const log = (content) => {
-	var path =  './log.txt';
+	var path =  './log/' + date() + '.txt';
+
+	if (!fs.existsSync('./log')){
+		fs.mkdirSync('./log', function(error){
+			if (error) throw error;
+		});
+	}
 
 	if (!fs.existsSync(path)){
 		fs.open(path, 'w', function(error, fd){
@@ -51,16 +62,14 @@ const getAsync = async(ip) => {
 	try{
 		const response = await fetch('http://ip-api.com/json/' + ip);
 		const json = await response.json();
-		const log1 = time() + ' country: ' + json['country'];
-		log(log1);
-		console.log(log1);
+		info(prefix() + ' country: ' + json['country']);
 	}catch(error){
-		console.log(error);
+		info(error);
 	}finally{
 	}
 };
 
-const time = () => {
+const date = () => {
 	let today = new Date();
 
 	var year = today.getFullYear();
@@ -68,12 +77,22 @@ const time = () => {
 	var day = ('0' + today.getDate()).slice(-2);
 	var date = year + '-' + month + '-' + day
 
+	return date;
+};
+
+const time = () => {
+	let today = new Date();
+
 	var hours = ('0' + today.getHours()).slice(-2); 
 	var minutes = ('0' + today.getMinutes()).slice(-2);
 	var seconds = ('0' + today.getSeconds()).slice(-2);
 	var time = hours + ':' + minutes + ':' + seconds;
 
-	return '[' + date + ' ' + time + ']';
+	return time;
+};
+
+const prefix = () => {
+	return '[' + date() + ' ' + time() + ']'; 
 };
 
 const logo = () => {
@@ -84,20 +103,16 @@ const logo = () => {
 	logo += "|   ,'.   |  | |  |  | |  | \\   --| `-' |  '  ''  \\   --. \n";
 	logo += "'--'   '--`--' `--`--' `--'  `----'`---'`--'`----' `----' \n";
 
-	console.log(logo);
-	console.log(time() + ' Version: ' + VERSION);
-	console.log(time() + ' Author: dev-ys-36 / https://github.com/dev-ys-36');
-	console.log(time() + ' Github: https://github.com/Security-Whileblue');
-	console.log(time() + ' Website: https://whiteblue.kr');
+	info(logo);
+	info(prefix() + ' Version: ' + VERSION);
+	info(prefix() + ' Author: dev-ys-36 / https://github.com/dev-ys-36');
+	info(prefix() + ' Github: https://github.com/Security-Whileblue');
+	info(prefix() + ' Website: https://whiteblue.kr');
 };
 
 const userInfo = (req) => {
-	var log1 = time() + ' client IP: ' + requestIp.getClientIp(req);
-	var log2 = time() + ' url: ' + req.originalUrl;
-	console.log(log1);
-	console.log(log2);
-	log(log1);
-	log(log2);
+	info(prefix() + ' client IP: ' + requestIp.getClientIp(req));
+	info(prefix() + ' url: ' + req.originalUrl);
 	getAsync(requestIp.getClientIp(req));
 };
 
