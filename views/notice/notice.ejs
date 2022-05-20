@@ -31,14 +31,16 @@
 		<!-- section -->
 		<section class="container">
 			<div class="row">
+				<p style="text-align: right;">
+					<span style="color: white;"><i class="bi bi-pencil-square"></i></span>&nbsp;<a href="https://whiteblue.kr/notice/write" style="color: #888; text-decoration: none;">글 작성</a>
+				</p>
 				<div class="notice" style="color: white;">
-					<table class="table table-hover" style="color: white;">
+					<table class="table table-hover" style="color: white; font-size: 14px;">
 						<thead>
 							<tr>
 								<th scope="col" style="width: 5%;">#</th>
 								<th scope="col">제목</th>
-								<th scope="col" style="width: 15%;">작성자</th>
-								<th scope="col" style="width: 15%;">조회수</th>
+								<th scope="col" class="text-end">작성자</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -47,8 +49,8 @@
 								<tr onClick="location.href='<%= url %>'">
 									<th scope="row"><%= array[index].id %></th>
 									<td><%= array[index].subject %></td>
-									<td><%= array[index].username %></td>
-									<td>0</td>
+									<td class="text-end"><%= array[index].username %></td>
+
 								</tr>
 							<% }); %>
 						</tbody>

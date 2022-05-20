@@ -65,7 +65,7 @@ router.get('/', function(req, res){
 	pool.getConnection(function(error, connection){
 		if (error) throw error;
 
-		connection.query('SELECT * FROM user', function(error, results, fields){
+		connection.query('SELECT * FROM user ORDER BY id DESC', function(error, results, fields){
 			connection.release();
 
 			if (error) throw error;
