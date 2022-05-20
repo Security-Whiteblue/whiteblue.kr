@@ -106,6 +106,12 @@ router.post('/modify', function(req, res){
 router.get('/modify/:id', function(req, res){
 	logger.userInfo(req);
 	const id = req.params.id;
+
+	if (typeof(req.session.user) === 'undefined'){
+		res.redirect('/auth/login');
+		return;
+	}
+	
 	req.session.ids = id; // notice id
 	if (!isNumeric(id)){
 		res.send('<script type="text/javascript">alert("only number."); document.location.href="/";</script>');	
@@ -175,7 +181,7 @@ router.get('/write', function(req, res){
 router.post('/write', function(req, res){
 	logger.userInfo(req);
 	const { subject, editordata, files } = req.body;
-	const username = 'admin';
+	const username = req.session.user['username'];
 	if (editordata){
 		pool.getConnection(function(error, connection){
 			if (error) throw error;

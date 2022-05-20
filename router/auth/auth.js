@@ -43,6 +43,11 @@ const html = (content, url) => {
 	return '<script type="text/javascript">alert("' + content + '"); document.location.href="' + url + '";</script>';
 };
 
+const checkEmail = (content) => {
+	var email = /^([0-9a-zA-Z_\.-]+)@([0-9a-zA-Z_-]+)(\.[0-9a-zA-Z_-]+){1,2}$/;
+	return !email.test(email) ? true : false;
+}
+
 /**
  * ../auth/login			{GET, POST}
  * ../auth/logout			{GET}
@@ -52,18 +57,28 @@ const html = (content, url) => {
 router.get('/login', function(req, res){
 	logger.userInfo(req);
 
-	if (typeof(req.session.user) === 'undefined'){
-		res.render('auth/login');
+	if (typeof(req.session.user) !== 'undefined'){
+		res.redirect('/');
 		return;
 	}
 
-	res.redirect('/');
+	res.render('auth/login');
 });
 
 router.post('/login', function(req, res){
 	logger.userInfo(req);
 
+	if (typeof(req.session.user) !== 'undefined'){
+		res.redirect('/');
+		return;
+	}
+
 	const { email, pwd } = req.body;
+
+	if (!checkEmail(email)){
+		res.send(html('fail.', '/auth/login'));
+		return;
+	}
 
 	if (email && pwd){
 		pool.getConnection(function(error, connection){
@@ -122,30 +137,47 @@ router.get('/register', function(req, res){
 
 router.post('/register', function(req, res){
 	logger.userInfo(req);
+
+	if (typeof(req.session.user) !== 'undefined'){
+		res.redirect('/');
+		return;
+	}
+
 	const { usr, email, pwd, pwdc } = req.body;
+
+	if (!checkEmail(email)){
+		res.send(html('fail.', '/auth/register'));
+		return;
+	}
+
+	if (pwd != pwdc){
+		res.send(html('password does not match.', '/auth/register'));
+		return;
+	}
+
 	if (usr && pwd && email && pwdc){
 		pool.getConnection(function(error, connection){
 			if (error) throw error;
+
 			connection.query('SELECT * FROM user WHERE username = ? AND password = ? AND email = ?', [usr, pwd, email], function(error, results, fields){
 				if (error) throw error;
-				if (results.length <= 0 && pwd == pwdc){
-					connection.query('INSERT INTO user (username, password, email) VALUES(?,?,?)', [usr, pwd, email], function (error, data){
-						if (error) throw error;
-						console.log(data);
-					});
-					res.send('<script type="text/javascript">alert("register success"); document.location.href="/";</script>');
-				}else if(pwd != pwdc){			
-					res.send('<script type="text/javascript">alert("password does not match."); document.location.href="/auth/register";</script>');
-				}else{
-					res.send('<script type="text/javascript">alert("email already."); document.location.href="/auth/register";</script>');
+
+				if (results.length > 0){
+					res.send(html('email already.', '/auth/register'));
+					return;
 				}
-				res.end();
+
+				connection.query('INSERT INTO user (username, password, email) VALUES (?, ?, ?)', [usr, pwd, email], function (error, results){
+					if (error) throw error;
+				});
+
+				res.send(html('register success', '/'));
 			});
+
 			connection.release();
 		});
 	}else{
-		res.send('<script type="text/javascript">alert("fail."); document.location.href="/auth/register";</script>');
-		res.end();
+		res.send(html('fail.', '/auth/register'));
 	}
 });
 
