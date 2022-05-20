@@ -62,7 +62,7 @@ router.get('/login', function(req, res){
 		return;
 	}
 
-	res.render('auth/login');
+	res.render('auth/login', { session: req.session.user });
 });
 
 router.post('/login', function(req, res){
@@ -85,6 +85,8 @@ router.post('/login', function(req, res){
 			if (error) throw error;
 
 			connection.query('SELECT * FROM user WHERE email = ? AND password = ?', [email, pwd], function(error, results, fields){
+				connection.release();
+
 				if (error) throw error;
 
 				if (results.length <= 0){
@@ -101,8 +103,6 @@ router.post('/login', function(req, res){
 
 				res.send(html('login success.', '/'));
 			});
-
-			connection.release();
 		});
 	}else{
 		res.send(html('fail.', '/auth/login'));
@@ -132,7 +132,7 @@ router.get('/register', function(req, res){
 		return;
 	}
 	
-	res.render('auth/register');
+	res.render('auth/register', { session: req.session.user });
 });
 
 router.post('/register', function(req, res){
@@ -168,13 +168,13 @@ router.post('/register', function(req, res){
 				}
 
 				connection.query('INSERT INTO user (username, password, email) VALUES (?, ?, ?)', [usr, pwd, email], function (error, results){
+					connection.release();
+
 					if (error) throw error;
 				});
 
 				res.send(html('register success', '/'));
 			});
-
-			connection.release();
 		});
 	}else{
 		res.send(html('fail.', '/auth/register'));

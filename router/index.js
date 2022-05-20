@@ -32,9 +32,7 @@ const logger = require('../utils/logger');
 
 router.get('/', function(req, res){
 	logger.userInfo(req);
-	res.render('index', {
-		session: req.session.user
-	});
+	res.render('index', { session: req.session.user });
 });
 
 module.exports = router;
