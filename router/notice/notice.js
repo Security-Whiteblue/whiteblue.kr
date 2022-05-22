@@ -54,12 +54,12 @@ const isNumeric = (value) => {
 };
 
 /**
- * ../notice			{GET}
- * ../notice/delete/id	{GET}
- * ../notice/modify		{POST}
- * ../notice/modify/id	{GET}
- * ../notice/read/id	{GET}
- * ../notice/write		{GET, POST}
+ * ../notice				{GET}
+ * ../notice/delete/id		{GET}
+ * ../notice/modify			{POST}
+ * ../notice/modify/id		{GET}
+ * ../notice/read/id		{GET}
+ * ../notice/write			{GET, POST}
  */
 
 router.get('/', function(req, res){
@@ -85,7 +85,6 @@ router.get('/delete/:id', function(req, res){
 	logger.userInfo(req);
 
 	const id = req.params.id;
-	req.session.ids = id; // notice id
 
 	if (typeof(req.session.user) === 'undefined'){
 		res.redirect('/auth/login');
@@ -96,6 +95,8 @@ router.get('/delete/:id', function(req, res){
 		res.send(html('only number.', '/'));
 		return;
 	}
+
+	req.session.ids = id; // notice id
 	
 	pool.getConnection(function(error, connection){
 		if (error) throw error;
@@ -105,6 +106,11 @@ router.get('/delete/:id', function(req, res){
 
 			if (results.length <= 0){
 				res.send(html('fail.', '/notice'));
+				return;
+			}
+
+			if (results[0].username != req.session.user['username']){
+				res.send(html('not yours.', '/notice'));
 				return;
 			}
 
@@ -128,12 +134,18 @@ router.post('/modify', function(req, res){
 	logger.userInfo(req);
 
 	const { subject, editordata, files } = req.body;
-	const id = req.session.ids;
 
 	if (typeof(req.session.user) === 'undefined'){
 		res.redirect('/auth/login');
 		return;
 	}
+
+	if (typeof(req.session.ids) === 'undefined'){
+		res.redirect('/notice');
+		return;
+	}
+
+	const id = req.session.ids;
 
 	if (editordata){
 		pool.getConnection(function(error, connection){
@@ -147,7 +159,12 @@ router.post('/modify', function(req, res){
 					return;
 				}
 
-				connection.query('UPDATE user SET subject = ?, txt = ? WHERE id = ?', [subject, editordata, id], function(error, results){
+				if (results[0].username != req.session.user['username']){
+					res.send(html('not yours.', '/notice'));
+					return;
+				}
+
+				connection.query('UPDATE user SET subject = ?, txt = ? WHERE id = ?', [subject, editordata, id], function(error, results, fileds){
 					connection.release();
 
 					if (error) throw error;
@@ -165,7 +182,6 @@ router.get('/modify/:id', function(req, res){
 	logger.userInfo(req);
 
 	const id = req.params.id;
-	req.session.ids = id; // notice id
 
 	if (typeof(req.session.user) === 'undefined'){
 		res.redirect('/auth/login');
@@ -176,6 +192,8 @@ router.get('/modify/:id', function(req, res){
 		res.send(html('only number.', '/'));
 		return;
 	}
+
+	req.session.ids = id; // notice id
 	
 	pool.getConnection(function(error, connection){
 		if (error) throw error;
@@ -187,6 +205,11 @@ router.get('/modify/:id', function(req, res){
 			
 			if (results.length <= 0){
 				res.send(html('fail.', '/'));
+				return;
+			}
+
+			if (results[0].username != req.session.user['username']){
+				res.send(html('not yours.', '/notice'));
 				return;
 			}
 
@@ -246,6 +269,12 @@ router.post('/write', function(req, res){
 	logger.userInfo(req);
 
 	const { subject, editordata, files } = req.body;
+
+	if (typeof(req.session.user) === 'undefined'){
+		res.redirect('/auth/login');
+		return;
+	}
+
 	const username = req.session.user['username'];
 
 	if (editordata){
@@ -260,7 +289,7 @@ router.post('/write', function(req, res){
 					return;
 				}
 
-				connection.query('INSERT INTO user (username, subject, txt) VALUES (?, ?, ?)', [username, subject, editordata], function(error, results){
+				connection.query('INSERT INTO user (username, subject, txt) VALUES (?, ?, ?)', [username, subject, editordata], function(error, results, fileds){
 					connection.release();
 
 					if (error) throw error;
