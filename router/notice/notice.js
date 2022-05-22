@@ -55,6 +55,9 @@ const isNumeric = (value) => {
 
 /**
  * ../notice			{GET}
+ * ../notice/delete/id	{GET}
+ * ../notice/modify		{POST}
+ * ../notice/modify/id	{GET}
  * ../notice/read/id	{GET}
  * ../notice/write		{GET, POST}
  */
@@ -73,6 +76,49 @@ router.get('/', function(req, res){
 			res.render('notice/notice', {
 				session: req.session.user,
 				results: results
+			});
+		});
+	});
+});
+
+router.get('/delete/:id', function(req, res){
+	logger.userInfo(req);
+
+	const id = req.params.id;
+	req.session.ids = id; // notice id
+
+	if (typeof(req.session.user) === 'undefined'){
+		res.redirect('/auth/login');
+		return;
+	}
+
+	if (!isNumeric(id)){
+		res.send(html('only number.', '/'));
+		return;
+	}
+	
+	pool.getConnection(function(error, connection){
+		if (error) throw error;
+
+		connection.query('SELECT * FROM user WHERE id = ?', [id], function(error, results, fields){
+			if (error) throw error;
+
+			if (results.length <= 0){
+				res.send(html('fail.', '/notice'));
+				return;
+			}
+
+			connection.query('DELETE FROM user WHERE id = ?', [id], function(error, results, fields){
+				connection.release();
+				
+				if (error) throw error;
+				
+				if (results.length <= 0){
+					res.send(html('fail.', '/notice'));
+					return;
+				}
+	
+				res.send(html('delete success', '/notice'));
 			});
 		});
 	});

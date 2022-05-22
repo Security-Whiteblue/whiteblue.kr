@@ -19,8 +19,12 @@
 	<!-- stylesheet css -->
 	<link rel="stylesheet" href="https://whiteblue.kr/css/main.css">
 	<script type="text/javascript">
-		function check(){
+		function check_modify(){
 			url = window.location.href.replace('read', 'modify');
+			location.href = url;
+		}
+		function check_delete(){
+			url = window.location.href.replace('read', 'delete');
 			location.href = url;
 		}
 	</script>
@@ -38,9 +42,9 @@
 		<section class="container">
 			<div class="row">
 				<p style="text-align: right;">
-					<span style="color: white;"><i class="bi bi-pencil-square"></i></span>&nbsp;<a href="#" onclick="check();" style="color: #888; text-decoration: none;">글 수정</a>
+					<span style="color: white;"><i class="bi bi-pencil-square"></i></span>&nbsp;<a href="#" onclick="check_modify();" style="color: #888; text-decoration: none;">글 수정</a>
 					&nbsp;
-					<span style="color: white;"><i class="bi bi-trash3"></i></span>&nbsp;<a href="#" onclick="check();" style="color: #888; text-decoration: none;">글 삭제</a>
+					<span style="color: white;"><i class="bi bi-trash3"></i></span>&nbsp;<a href="#" onclick="check_delete();" style="color: #888; text-decoration: none;">글 삭제</a>
 				</p>
 				<div class="notice" style="color: white;">
 					<%= subject %>
