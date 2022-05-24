@@ -51,6 +51,7 @@ input {
 
 .note-editable{
   font-family: 'NanumSquare' !important;
+  text-align: justify
 }
 
 .note-editor.note-airframe .note-editing-area .note-editable, .note-editor.note-frame .note-editing-area .note-editable {

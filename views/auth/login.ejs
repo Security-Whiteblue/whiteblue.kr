@@ -19,6 +19,7 @@
 	<!-- stylesheet css -->
 	<link rel="stylesheet" href="https://whiteblue.kr/css/main.css">
 	<script type="text/javascript">
+		location.href = '#main';
 		function check(id){
 			if (id.email.value.length == 0){ alert("Email spaces."); id.email.focus(); return false; }
 			if (id.pwd.value.length == 0){ alert("Password spaces."); id.pwd.focus(); return false; }
@@ -33,7 +34,7 @@
 
 	<%-include('../layout/header')%>
 	
-	<div class="main">
+	<div id="main" class="main">
 		<!-- login section -->
 		<section class="login">
 			<div class="container">

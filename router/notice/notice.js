@@ -164,7 +164,9 @@ router.post('/modify', function(req, res){
 					return;
 				}
 
-				connection.query('UPDATE user SET subject = ?, txt = ? WHERE id = ?', [subject, editordata, id], function(error, results, fileds){
+				const date = logger.date() + ' ' + logger.time();
+
+				connection.query('UPDATE user SET subject = ?, last_date = ?, txt = ? WHERE id = ?', [subject, date, editordata, id], function(error, results, fileds){
 					if (error) throw error;
 
 					connection.release();
@@ -247,7 +249,10 @@ router.get('/read/:id', function(req, res){
 
 			res.render('notice/read', {
 				session: req.session.user,
+				username: results[0].username,
 				subject: results[0].subject,
+				last_date: results[0].last_date,
+				view: results[0].view,
 				html: results[0].txt
 			});
 		});
