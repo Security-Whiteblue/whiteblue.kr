@@ -69,9 +69,9 @@ router.get('/', function(req, res){
 		if (error) throw error;
 
 		connection.query('SELECT * FROM user ORDER BY id DESC', function(error, results, fields){
-			connection.release();
-
 			if (error) throw error;
+
+			connection.release();
 
 			res.render('notice/notice', {
 				session: req.session.user,
@@ -115,9 +115,9 @@ router.get('/delete/:id', function(req, res){
 			}
 
 			connection.query('DELETE FROM user WHERE id = ?', [id], function(error, results, fields){
-				connection.release();
-				
 				if (error) throw error;
+
+				connection.release();
 				
 				if (results.length <= 0){
 					res.send(html('fail.', '/notice'));
@@ -165,9 +165,9 @@ router.post('/modify', function(req, res){
 				}
 
 				connection.query('UPDATE user SET subject = ?, txt = ? WHERE id = ?', [subject, editordata, id], function(error, results, fileds){
-					connection.release();
-
 					if (error) throw error;
+
+					connection.release();
 
 					res.send(html('modify success', '/notice'));
 				});
@@ -199,9 +199,9 @@ router.get('/modify/:id', function(req, res){
 		if (error) throw error;
 		
 		connection.query('SELECT * FROM user WHERE id = ?', [id], function(error, results, fields){
-			connection.release();
-			
 			if (error) throw error;
+
+			connection.release();
 			
 			if (results.length <= 0){
 				res.send(html('fail.', '/'));
@@ -236,9 +236,9 @@ router.get('/read/:id', function(req, res){
 		if (error) throw error;
 		
 		connection.query('SELECT * FROM user WHERE id = ?', [id], function(error, results, fields){
-			connection.release();
-			
 			if (error) throw error;
+
+			connection.release();
 			
 			if (results.length <= 0){
 				res.send(html('fail.', '/'));
@@ -288,11 +288,13 @@ router.post('/write', function(req, res){
 					res.send(html('fail', '/notice'));
 					return;
 				}
+				
+				const date = logger.date() + ' ' + logger.time();
 
-				connection.query('INSERT INTO user (username, subject, txt) VALUES (?, ?, ?)', [username, subject, editordata], function(error, results, fileds){
-					connection.release();
-
+				connection.query('INSERT INTO user (username, subject, first_date, last_date, view, txt) VALUES (?, ?, ?, ?, ?, ?)', [username, subject, date, date, 0, editordata], function(error, results, fileds){
 					if (error) throw error;
+					
+					connection.release();
 				});
 
 				res.send(html('write success', '/notice'));

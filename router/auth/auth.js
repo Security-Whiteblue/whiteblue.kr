@@ -85,9 +85,9 @@ router.post('/login', function(req, res){
 			if (error) throw error;
 
 			connection.query('SELECT * FROM user WHERE email = ? AND password = ?', [email, pwd], function(error, results, fields){
-				connection.release();
-
 				if (error) throw error;
+
+				connection.release();
 
 				if (results.length <= 0){
 					res.send(html('account does not match.', '/auth/login'));
@@ -168,9 +168,9 @@ router.post('/register', function(req, res){
 				}
 
 				connection.query('INSERT INTO user (username, password, email) VALUES (?, ?, ?)', [usr, pwd, email], function (error, results){
-					connection.release();
-
 					if (error) throw error;
+
+					connection.release();
 				});
 
 				res.send(html('register success', '/'));

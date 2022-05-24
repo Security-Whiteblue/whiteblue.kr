@@ -116,5 +116,7 @@ const userInfo = (req) => {
 	getAsync(requestIp.getClientIp(req));
 };
 
+module.exports.date = date;
+module.exports.time = time;
 module.exports.logo = logo;
 module.exports.userInfo = userInfo;
