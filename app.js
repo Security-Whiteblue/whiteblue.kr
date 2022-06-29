@@ -41,6 +41,8 @@ const indexjs = require(__dirname + '/router/index');
 
 const authjs = require(__dirname + '/router/auth/auth');
 
+const formjs = require(__dirname + '/router/form/form');
+
 const noticejs = require(__dirname + '/router/notice/notice');
 
 const profilejs = require(__dirname + '/router/profile');;
@@ -82,6 +84,8 @@ app.use('/', express.static(__dirname + '/public'));
 app.use('/', indexjs);
 
 app.use('/auth', authjs);
+
+app.use('/form', formjs);
 
 app.use('/notice', noticejs);
 

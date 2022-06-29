@@ -1,13 +1,22 @@
 @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@1.0/nanumsquare.css);
 
-.normal     { font-weight: 400 }
-.bold       { font-weight: 700 }
-.bolder     { font-weight: 800 }
-.light      { font-weight: 300 }
+.normal	 { font-weight: 400 }
+.bold	   { font-weight: 700 }
+.bolder	 { font-weight: 800 }
+.light	  { font-weight: 300 }
 
 .main {
   padding-top: 60px;
   padding-bottom: 120px;
+}
+
+.form_form {
+  text-align: left;
+  padding: 30px;
+  border-width: 2px;
+  border-style: solid;
+  border-color: white;
+  color: white;
 }
 
 .register_form, .login_form {
@@ -30,7 +39,7 @@ input:-webkit-autofill {
   -webkit-text-fill-color: #fff;
 }
 
-.login_btn, .register_btn, .notice_btn {
+.form_btn, .login_btn, .register_btn, .notice_btn {
   border-width: 2px;
   border-style: solid;
   border-color: white;
@@ -103,27 +112,27 @@ input[type=password]::placeholder {
 
 /*@media (prefers-color-scheme: light) {
   :root {
-    --alert-background-color: #292929;
-    --body-background-color: #292929;
-    --president-background-color: #fff;
-    --activities-background-color: #3366CC;
-    --introduce-background-color: #3366CC;
-    --technologies-background-color: #fff;
-    --contact-background-color: #fff;
-    --member-background-color: #3366CC;
+	--alert-background-color: #292929;
+	--body-background-color: #292929;
+	--president-background-color: #fff;
+	--activities-background-color: #3366CC;
+	--introduce-background-color: #3366CC;
+	--technologies-background-color: #fff;
+	--contact-background-color: #fff;
+	--member-background-color: #3366CC;
   }
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --alert-background-color: #292929;
-    --body-background-color: #292929;
-    --president-background-color: #fff;
-    --activities-background-color: #3366CC;
-    --introduce-background-color: #3366CC;
-    --technologies-background-color: #fff;
-    --contact-background-color: #fff;
-    --member-background-color: #3366CC;
+	--alert-background-color: #292929;
+	--body-background-color: #292929;
+	--president-background-color: #fff;
+	--activities-background-color: #3366CC;
+	--introduce-background-color: #3366CC;
+	--technologies-background-color: #fff;
+	--contact-background-color: #fff;
+	--member-background-color: #3366CC;
   }
 }*/
 
@@ -182,7 +191,7 @@ html, body {
 }
 
 html {
-    -webkit-font-smoothing: antialiased;
+	-webkit-font-smoothing: antialiased;
 }
 
 h1 {font-size:40px;}
@@ -312,13 +321,13 @@ footer {
 
 @media ( max-width: 360px ) {
   header h1 {
-    font-size: 30px;
+	font-size: 30px;
   }
   .president h2 {
-    font-size: 24px;
+	font-size: 24px;
   }
   .introduce h4,
   .member h4 {
-    font-size: 20px;
+	font-size: 20px;
   }
 }
