@@ -50,21 +50,19 @@
 							<form name="form_write" action="/form/write" method="post" onsubmit="return check(this)">
 								<h3 style="text-align: center;">동아리 지원서</h3>
                                 <div>
-                                    이름: <input type="text" name="name" id="name" placeholder="" style="width: 90%;">
+                                    이름: <%= name %>
                                 </div>
+                                <br>
                                 <div>
-                                    학번: <input type="text" name="num" id="num" placeholder="" style="width: 90%;">
+                                    학번: <%= num %>
                                 </div>
+                                <br>
                                 <div>
-                                    연락처: <input type="text" name="phone" id="phone" placeholder="" style="width: 90%;">
+                                    연락처: <%= phone %>
                                 </div>
                                 <br>
 								<h4>지원 동기</h4>
-								<textarea class="form-control" name="motive" id="motive" rows="8" onkeyup="counter(this, 400)"></textarea>
-								<span id="count">0 / 400 자</span>
-                                <div class="form_btn">
-									<input type="submit" value="지원하기" style="width: 100%;">
-								</div>
+								<textarea readonly class="form-control" name="motive" id="motive" rows="8"><%= motive %></textarea>
 							</form>
 						</div>
 					</div>

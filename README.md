@@ -11,7 +11,7 @@ Security-Whiteblue website 2.1v
 # FUNCTION
 1. Auth ( Register / Login )
 2. Notice ( crud )
-3. Application Form ( todo )
+3. Application Form ( crud )
 
 # Unresolved problem
 1. MYSQL data encryption ( 0 / 100 )

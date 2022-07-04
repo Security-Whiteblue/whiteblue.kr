@@ -27,8 +27,6 @@ const router = express.Router();
 
 const mysql = require('mysql');
 
-const MobileDetect = require('mobile-detect');
-
 /**
  * WARNING { DATA }
  * This document should not be published as a security document.
@@ -36,21 +34,96 @@ const MobileDetect = require('mobile-detect');
 const data = require('../../utils/data');
 const logger = require('../../utils/logger');
 
+const pool = mysql.createPool(data.mysql_data('form'));
+
 const html = (content, url) => {
 	return '<script type="text/javascript">alert("' + content + '"); document.location.href="' + url + '";</script>';
 };
 
-router.get('/', function(req, res){
+const isNumeric = (value) => {
+	if (typeof value === 'number'){
+		return value - value === 0;
+	}
+	if (typeof value === 'string' && value.trim() !== ''){
+		return Number.isFinite ? Number.isFinite(+value) : isFinite(+value);
+	}
+	return false;
+};
+
+/**
+ * ../form/read/id      {GET}
+ * ../form/write        {GET, POST}
+ */
+
+router.get('/read/:id', function(req, res){
 	logger.userInfo(req);
 
-    const md = new MobileDetect(req.headers['user-agent']);
+	const id = req.params.id;
 
-    if (md.phone() !== null){
-        res.send(html('only works on desktops.', '/'));
-        return;
+	if (!isNumeric(id)){
+		res.send(html('only number.', '/'));
+		return;
+	}
+
+	pool.getConnection(function(error, connection){
+		if (error) throw error;
+		
+		connection.query('SELECT * FROM user WHERE id = ?', [id], function(error, results, fields){
+			if (error) throw error;
+
+			connection.release();
+			
+			if (results.length <= 0){
+				res.send(html('fail.', '/'));
+				return;
+			}
+
+			res.render('form/read', {
+				session: req.session.user,
+				name: results[0].name,
+				num: results[0].num,
+				phone: results[0].phone,
+				motive: results[0].motive,
+			});
+		});
+	});
+});
+
+router.get('/write', function(req, res){
+	logger.userInfo(req);
+
+	res.render('form/form', { session: req.session.user });
+});
+
+router.post('/write', function(req, res){
+	logger.userInfo(req);
+
+	const { name, num, phone, motive } = req.body;
+
+    if (name && num && phone && motive){
+        pool.getConnection(function(error, connection){
+			if (error) throw error;
+
+			connection.query('SELECT * FROM user WHERE name = ? AND num = ? AND phone = ? AND motive = ?', [name, num, phone, motive], function(error, results, fields){
+				if (error) throw error;
+
+				if (results.length > 0){
+					res.send(html('form fail.', '/'));
+					return;
+				}
+
+				connection.query('INSERT INTO user (name, num, phone, motive) VALUES (?, ?, ?, ?)', [name, num, phone, motive], function(error, results, fileds){
+					if (error) throw error;
+					
+					connection.release();
+				});
+
+				res.send(html('form success.', '/notice'));
+			});
+		});
+    }else{
+        res.send(html('form fail.', '/'));
     }
-
-    res.render('form/form', { session: req.session.user });
 });
 
 module.exports = router;
