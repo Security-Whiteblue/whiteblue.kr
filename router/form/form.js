@@ -118,7 +118,7 @@ router.post('/write', function(req, res){
 					connection.release();
 				});
 
-				res.send(html('form success.', '/notice'));
+				res.send(html('form success.', '/'));
 			});
 		});
     }else{
