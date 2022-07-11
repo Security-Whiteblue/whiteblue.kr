@@ -12,6 +12,7 @@ Security-Whiteblue website 2.1v
 1. Auth ( Register / Login )
 2. Notice ( crud )
 3. Application Form ( crud )
+4. Email validation ( Form Func )
 
 # Unresolved problem
 1. MYSQL data encryption ( 0 / 100 )
