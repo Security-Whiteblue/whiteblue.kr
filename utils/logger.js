@@ -28,7 +28,7 @@ const fetch = require('node-fetch'); /** 2.6.6 */
 
 const requestIp = require('request-ip');
 
-const VERSION = '2.1v';
+const VERSION = '2.2v';
 
 const info = (content) => {
 	log(content);

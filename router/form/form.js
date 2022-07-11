@@ -40,6 +40,18 @@ const html = (content, url) => {
 	return '<script type="text/javascript">alert("' + content + '"); document.location.href="' + url + '";</script>';
 };
 
+const rand_str = () => {
+	const characters ='0123456789';
+	let result = '';
+	const charactersLength = characters.length;
+
+	for (let i = 0; i < 4; i++){
+		result += characters.charAt(Math.floor(Math.random() * charactersLength));
+	}
+	
+	return result;
+}
+
 const isNumeric = (value) => {
 	if (typeof value === 'number'){
 		return value - value === 0;
@@ -51,9 +63,50 @@ const isNumeric = (value) => {
 };
 
 /**
- * ../form/read/id      {GET}
- * ../form/write        {GET, POST}
+ * ../form/email		{POST}
+ * ../form/read/id		{GET}
+ * ../form/write		{GET, POST}
  */
+
+router.post('/email', function(req, res){
+	logger.userInfo(req);
+
+	const { email } = req.body;
+
+	if (email){
+		res.send('<script type="text/javascript">alert("인증번호가 전송되었습니다.");</script>');
+	}
+
+	var a = rand_str();
+
+	req.session.user = {
+		id : email,
+		num: a,
+		status: false
+	};
+	req.session.save();
+
+	data.sendEmail(a, email);
+});
+
+router.post('/email_test', function(req, res){
+	logger.userInfo(req);
+
+	const { email_num } = req.body;
+
+	console.log(req.session);
+
+	if (email_num){
+		if (email_num != req.session.user['num']){
+			res.send(html('wrong number.', '/'));
+			return;
+		}
+
+		res.send(html('correct number.', '/'));
+		req.session.user['status'] = true;
+		req.session.save();
+	}
+});
 
 router.get('/read/:id', function(req, res){
 	logger.userInfo(req);
@@ -100,8 +153,18 @@ router.post('/write', function(req, res){
 
 	const { name, num, phone, motive } = req.body;
 
-    if (name && num && phone && motive){
-        pool.getConnection(function(error, connection){
+	if (name && num && phone && motive){
+		if (typeof(req.session.user) == 'undefined'){
+			res.send(html('이메일 인증 후 지원할 수 있습니다.', '/'));
+			return;
+		}
+
+		if (!req.session.user['status']){
+			res.send(html('이메일 인증 후 지원할 수 있습니다.', '/'));
+			return;
+		}
+
+		pool.getConnection(function(error, connection){
 			if (error) throw error;
 
 			connection.query('SELECT * FROM user WHERE name = ? AND num = ? AND phone = ? AND motive = ?', [name, num, phone, motive], function(error, results, fields){
@@ -121,9 +184,9 @@ router.post('/write', function(req, res){
 				res.send(html('form success.', '/'));
 			});
 		});
-    }else{
-        res.send(html('form fail.', '/'));
-    }
+	}else{
+		res.send(html('form fail.', '/'));
+	}
 });
 
 module.exports = router;

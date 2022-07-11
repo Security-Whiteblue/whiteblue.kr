@@ -20,6 +20,26 @@
 	<link rel="stylesheet" href="https://whiteblue.kr/css/main.css">
 	<script type="text/javascript">
 		location.href = '#main';
+		function sendPost(url, params){
+			var form = document.createElement('form');
+			form.setAttribute('method', 'post');
+			form.setAttribute('target', '_blank');
+			form.setAttribute('action', url);
+			document.charset = "UTF-8";
+			for (var key in params){
+				var hiddenField = document.createElement('input');
+				hiddenField.setAttribute('type', 'hidden');
+				hiddenField.setAttribute('name', key);
+				hiddenField.setAttribute('value', params[key]);
+				form.appendChild(hiddenField);
+			}
+			document.body.appendChild(form);
+			form.submit();
+		}
+		function email(id){
+			var email = document.getElementById("email").value;
+			sendPost("email", { email: id.email });
+		}
 		function check(id){
 			if (id.name.value.length == 0){ alert("Name spaces."); id.name.focus(); return false; }
 			if (id.num.value.length == 0){ alert("Number spaces."); id.num.focus(); return false; }
@@ -46,6 +66,23 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12 offset-lg-12">
+						<div class="form_form">
+							<form name="form_write" action="/form/email" method="post" target="e">
+								<input type="text" name="email" id="email" placeholder="이메일 입력" style="width: 50%;">
+								<div class="form_btn">
+									<input type="submit" value="인증번호 받기" style="width: 100%;">
+								</div>
+							</form>
+							<br>
+							<form name="form_write" action="/form/email_test" method="post" target="e">
+								<input type="text" name="email_num" id="email_num" placeholder="인증번호 입력" style="width: 50%;">
+								<div class="form_btn">
+									<input type="submit" value="인증하기" style="width: 100%;">
+								</div>
+							</form>
+							<iframe name='e' style='display:none;'></iframe>
+						</div>
+						<br>
 						<div class="form_form">
 							<form name="form_write" action="/form/write" method="post" onsubmit="return check(this)">
 								<h3 style="text-align: center;">동아리 지원서</h3>
@@ -74,6 +111,15 @@
 	</div>
 
 	<%-include('../layout/footer')%>
+
+	<!--<script>
+		document.getElementById('1').addEventListener('click', (event) => {
+			event.preventDefault(); // disable the refresh on the page when submit
+			const value = document.getElementById('email').value;
+			sendPost('email', { email: value });
+			console.log(value);
+		});
+	</script>-->
 	
 </body>
 </html>
