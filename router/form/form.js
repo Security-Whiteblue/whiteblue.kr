@@ -40,7 +40,7 @@ const html = (content, url) => {
 	return '<script type="text/javascript">alert("' + content + '"); document.location.href="' + url + '";</script>';
 };
 
-const rand_str = () => {
+const rand_num = () => {
 	const characters ='0123456789';
 	let result = '';
 	const charactersLength = characters.length;
@@ -77,16 +77,16 @@ router.post('/email', function(req, res){
 		res.send('<script type="text/javascript">alert("인증번호가 전송되었습니다.");</script>');
 	}
 
-	var a = rand_str();
+	var random_number = rand_num();
 
-	req.session.user = {
+	req.session.form = {
 		id : email,
-		num: a,
+		num: random_number,
 		status: false
 	};
 	req.session.save();
 
-	data.sendEmail(a, email);
+	data.sendEmail(random_number, email);
 });
 
 router.post('/email_test', function(req, res){
@@ -97,13 +97,13 @@ router.post('/email_test', function(req, res){
 	console.log(req.session);
 
 	if (email_num){
-		if (email_num != req.session.user['num']){
+		if (email_num != req.session.form['num']){
 			res.send(html('wrong number.', '/'));
 			return;
 		}
 
 		res.send(html('correct number.', '/'));
-		req.session.user['status'] = true;
+		req.session.form['status'] = true;
 		req.session.save();
 	}
 });
@@ -132,7 +132,7 @@ router.get('/read/:id', function(req, res){
 			}
 
 			res.render('form/read', {
-				session: req.session.user,
+				//session: req.session.form,
 				name: results[0].name,
 				num: results[0].num,
 				phone: results[0].phone,
@@ -145,7 +145,7 @@ router.get('/read/:id', function(req, res){
 router.get('/write', function(req, res){
 	logger.userInfo(req);
 
-	res.render('form/form', { session: req.session.user });
+	res.render('form/form', { /*session: req.session.form*/ });
 });
 
 router.post('/write', function(req, res){
@@ -154,12 +154,12 @@ router.post('/write', function(req, res){
 	const { name, num, phone, motive } = req.body;
 
 	if (name && num && phone && motive){
-		if (typeof(req.session.user) == 'undefined'){
+		if (typeof(req.session.form) === 'undefined'){
 			res.send(html('이메일 인증 후 지원할 수 있습니다.', '/'));
 			return;
 		}
 
-		if (!req.session.user['status']){
+		if (!req.session.form['status']){
 			res.send(html('이메일 인증 후 지원할 수 있습니다.', '/'));
 			return;
 		}
