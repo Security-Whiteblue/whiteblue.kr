@@ -20,7 +20,7 @@
 	<link rel="stylesheet" href="https://whiteblue.kr/css/main.css">
 	<script type="text/javascript">
 		location.href = '#main';
-		/*function sendPost(url, params){
+		function sendPost(url, params){
 			var form = document.createElement('form');
 			form.setAttribute('method', 'post');
 			form.setAttribute('target', '_blank');
@@ -39,30 +39,6 @@
 		function email(id){
 			var email = document.getElementById("email").value;
 			sendPost("email", { email: id.email });
-		}*/
-		function ajax1(){
-			var request = new XMLHttpRequest();
-			var email = document.getElementById("email").value
-			request.open("POST", "https://whiteblue.kr/form/email", true);
-			request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-			request.send("email=" + email);
-			request.onreadystatechange = function(){
-				if (request.readyState === 4 && request.status === 200){
-					document.getElementById("test1").innerHTML = request.responseText;
-				}
-			}
-		}
-		function ajax2(){
-			var request = new XMLHttpRequest();
-			var email_num = document.getElementById("email_num").value
-			request.open("POST", "https://whiteblue.kr/form/email_test", true);
-			request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-			request.send("email_num=" + email_num);
-			request.onreadystatechange = function(){
-				if (request.readyState === 4 && request.status === 200){
-					document.getElementById("test2").innerHTML = request.responseText;
-				}
-			}
 		}
 		function check(id){
 			if (id.name.value.length == 0){ alert("Name spaces."); id.name.focus(); return false; }
@@ -91,13 +67,7 @@
 				<div class="row">
 					<div class="col-lg-12 offset-lg-12">
 						<div class="form_form">
-							<input type="text" name="email" id="email" placeholder="이메일을 입력하세요.." style="width: 100%;">
-							<button type="button" class="email_button" onclick="return ajax1()">인증번호 받기</button>
-							<div id="test1">
-							</div>
-							<div id="test2">
-							</div>
-							<!--<form name="form_write" action="/form/email" method="post" target="e">
+							<form name="form_write" action="/form/email" method="post" target="e">
 								<input type="text" name="email" id="email" placeholder="이메일을 입력하세요.." style="width: 100%;">
 								<div class="form_btn">
 									<input type="submit" value="인증번호 받기" style="width: 100%;">
@@ -110,10 +80,10 @@
 									<input type="submit" value="인증하기" style="width: 100%;">
 								</div>
 							</form>
-							<iframe name='e' style='display:none;'></iframe>-->
+							<iframe name='e' style='display:none;'></iframe>
 						</div>
 						<br>
-						<!--<div class="form_form">
+						<div class="form_form">
 							<form name="form_write" action="/form/write" method="post" onsubmit="return check(this)">
 								<h3 style="text-align: center;">동아리 지원서</h3>
 								<div>
@@ -133,7 +103,7 @@
 									<input type="submit" value="지원하기" style="width: 100%;">
 								</div>
 							</form>
-						</div>-->
+						</div>
 					</div>
 				</div>
 			</div>

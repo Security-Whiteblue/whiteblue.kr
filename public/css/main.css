@@ -5,6 +5,17 @@
 .bolder	 { font-weight: 800 }
 .light	  { font-weight: 300 }
 
+.email_button {
+  width: 100%;
+  padding: 10px 0;
+  color: white;
+  border-width: 2px;
+  border-style: solid;
+  border-color: white;
+  margin-top: 50px;
+  background-color:transparent;
+}
+
 .main {
   padding-top: 60px;
   padding-bottom: 120px;
