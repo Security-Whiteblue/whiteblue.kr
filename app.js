@@ -54,7 +54,7 @@ const HTTP_PORT = 80;
 const HTTPS_PORT = 443;
 
 app.use(expressSession({
-	secret: data.session_data(),
+	secret: data.session_secretKey(),
 	resave: false,
 	saveUninitialized: true,
 	cookie: {

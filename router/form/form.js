@@ -99,7 +99,7 @@ router.post('/email', function(req, res){
 	};
 	req.session.save();
 
-	data.sendEmail(random_number, email);
+	data.sendEmail(email, '[Security Whiteblue] 인증번호 안내', '인증번호: ' + random_number);
 });
 
 router.post('/email_test', function(req, res){
