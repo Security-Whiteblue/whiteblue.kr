@@ -63,10 +63,35 @@ const isNumeric = (value) => {
 };
 
 /**
+ * ../form				{GET}
  * ../form/email		{POST}
  * ../form/read/id		{GET}
  * ../form/write		{GET, POST}
  */
+
+router.get('/', function(req, res){
+	logger.userInfo(req);
+
+	if (typeof(req.session.user) === 'undefined'){
+		res.redirect('/auth/login');
+		return;
+	}
+
+	pool.getConnection(function(error, connection){
+		if (error) throw error;
+
+		connection.query('SELECT * FROM user ORDER BY id DESC', function(error, results, fields){
+			if (error) throw error;
+
+			connection.release();
+
+			res.render('form/form', {
+				session: req.session.user,
+				results: results
+			});
+		});
+	});
+});
 
 router.post('/email', function(req, res){
 	logger.userInfo(req);
@@ -175,7 +200,7 @@ router.get('/read/:id', function(req, res){
 router.get('/write', function(req, res){
 	logger.userInfo(req);
 
-	res.render('form/form', { /*session: req.session.form*/ });
+	res.render('form/write', { /*session: req.session.form*/ });
 });
 
 router.post('/write', function(req, res){

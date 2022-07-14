@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="utf-8">
+	<title>Security Whiteblue</title>
+	<link rel="shortcut icon" href="https://whiteblue.kr/images/favicon.ico">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="author" content="dev-ys-36">
+	<meta name = "keywords" content="Security Whiteblue">
+	<meta name="description" content="Security Whiteblue">
+	<meta property="og:title" content="Security Whiteblue">
+	<meta property="og:url" content="">
+	<meta property="og:description" content="Security Whiteblue">
+	<!-- bootstrap -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+	<!-- stylesheet css -->
+	<link rel="stylesheet" href="https://whiteblue.kr/css/main.css">
+	<script type="text/javascript">
+		location.href = '#main';
+		/*function sendPost(url, params){
+			var form = document.createElement('form');
+			form.setAttribute('method', 'post');
+			form.setAttribute('target', '_blank');
+			form.setAttribute('action', url);
+			document.charset = "UTF-8";
+			for (var key in params){
+				var hiddenField = document.createElement('input');
+				hiddenField.setAttribute('type', 'hidden');
+				hiddenField.setAttribute('name', key);
+				hiddenField.setAttribute('value', params[key]);
+				form.appendChild(hiddenField);
+			}
+			document.body.appendChild(form);
+			form.submit();
+		}
+		function email(id){
+			var email = document.getElementById("email").value;
+			sendPost("email", { email: id.email });
+		}*/
+		function ajax1(){
+			var request = new XMLHttpRequest();
+			var email = document.getElementById("email").value
+			request.open("POST", "https://whiteblue.kr/form/email", true);
+			request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			request.send("email=" + email);
+			request.onreadystatechange = function(){
+				if (request.readyState === 4 && request.status === 200){
+					document.getElementById("test1").innerHTML = request.responseText;
+				}
+			}
+		}
+		function ajax2(){
+			var request = new XMLHttpRequest();
+			var email_num = document.getElementById("email_num").value
+			request.open("POST", "https://whiteblue.kr/form/email_test", true);
+			request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+			request.send("email_num=" + email_num);
+			request.onreadystatechange = function(){
+				if (request.readyState === 4 && request.status === 200){
+					document.getElementById("test2").innerHTML = request.responseText;
+				}
+			}
+		}
+		function check(id){
+			if (id.name.value.length == 0){ alert("Name spaces."); id.name.focus(); return false; }
+			if (id.num.value.length == 0){ alert("Number spaces."); id.num.focus(); return false; }
+			if (id.phone.value.length == 0){ alert("Phone spaces."); id.phone.focus(); return false; }
+			if (id.motive.value.length == 0){ alert("Content spaces."); id.motive.focus(); return false; }
+		}
+		function counter(text, length){
+			if (text.value.length >= length){ text.value = text.value.substring(0, length); text.focus(); }
+			document.getElementById("count").innerHTML = text.value.length + " / " + length + " 자";
+		}
+	</script>
+</head>
+<body data-spy="scroll" data-target=".navbar-collapse">
+	
+	<%-include('../layout/alert')%>
+
+	<%-include('../layout/nav')%>
+
+	<%-include('../layout/header')%>
+	
+	<div id="main" class="main">
+		<!-- form section -->
+		<section class="form">
+			<div class="container">
+				<div class="row">
+					<div class="col-lg-12 offset-lg-12">
+						<div class="form_form">
+							<input type="text" name="email" id="email" placeholder="이메일을 입력하세요.." style="width: 100%;">
+							<button type="button" class="email_button" onclick="return ajax1()">인증번호 받기</button>
+							<div id="test1">
+							</div>
+							<div id="test2">
+							</div>
+							<!--<form name="form_write" action="/form/email" method="post" target="e">
+								<input type="text" name="email" id="email" placeholder="이메일을 입력하세요.." style="width: 100%;">
+								<div class="form_btn">
+									<input type="submit" value="인증번호 받기" style="width: 100%;">
+								</div>
+							</form>
+							<br>
+							<form name="form_write" action="/form/email_test" method="post" target="e">
+								<input type="text" name="email_num" id="email_num" placeholder="인증번호를 입력하세요.." style="width: 100%;">
+								<div class="form_btn">
+									<input type="submit" value="인증하기" style="width: 100%;">
+								</div>
+							</form>
+							<iframe name='e' style='display:none;'></iframe>-->
+						</div>
+						<br>
+						<!--<div class="form_form">
+							<form name="form_write" action="/form/write" method="post" onsubmit="return check(this)">
+								<h3 style="text-align: center;">동아리 지원서</h3>
+								<div>
+									<input type="text" name="name" id="name" placeholder="이름을 입력하세요.." style="width: 100%;">
+								</div>
+								<div>
+									<input type="text" name="num" id="num" placeholder="학번을 입력하세요.." style="width: 100%;">
+								</div>
+								<div>
+									<input type="text" name="phone" id="phone" placeholder="전화번호를 입력하세요.." style="width: 100%;">
+								</div>
+								<br>
+								<h4>지원 동기</h4>
+								<textarea class="form-control" name="motive" id="motive" rows="9" placeholder="지원동기를 기술하세요.." onkeyup="counter(this, 400)"></textarea>
+								<span id="count">0 / 400 자</span>
+								<div class="form_btn">
+									<input type="submit" value="지원하기" style="width: 100%;">
+								</div>
+							</form>
+						</div>-->
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+
+	<%-include('../layout/footer')%>
+
+	<!--<script>
+		document.getElementById('1').addEventListener('click', (event) => {
+			event.preventDefault(); // disable the refresh on the page when submit
+			const value = document.getElementById('email').value;
+			sendPost('email', { email: value });
+			console.log(value);
+		});
+	</script>-->
+	
+</body>
+</html>
