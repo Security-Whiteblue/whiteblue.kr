@@ -49,20 +49,28 @@
 						<div class="form_form">
 							<form name="form_write" action="/form/write" method="post" onsubmit="return check(this)">
 								<h3 style="text-align: center;">동아리 지원서</h3>
+								<div>
+                                    날짜: <%= data.date %>
+                                </div>
+								<br>
                                 <div>
-                                    이름: <%= name %>
+                                    이름: <%= data.username %>
                                 </div>
                                 <br>
                                 <div>
-                                    학번: <%= num %>
+                                    학번: <%= data.studentid %>
+                                </div>
+								<br>
+                                <div>
+                                    이메일: <%= data.email %>
                                 </div>
                                 <br>
                                 <div>
-                                    연락처: <%= phone %>
+                                    연락처: <%= data.phone %>
                                 </div>
                                 <br>
 								<h4>지원 동기</h4>
-								<textarea readonly class="form-control" name="motive" id="motive" rows="8"><%= motive %></textarea>
+								<textarea readonly class="form-control" name="motive" id="motive" rows="8"><%= data.content1 %></textarea>
 							</form>
 						</div>
 					</div>

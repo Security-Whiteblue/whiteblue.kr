@@ -186,13 +186,7 @@ router.get('/read/:id', function(req, res){
 				return;
 			}
 
-			res.render('form/read', {
-				//session: req.session.form,
-				name: results[0].name,
-				num: results[0].num,
-				phone: results[0].phone,
-				motive: results[0].motive,
-			});
+			res.render('form/read', { data: results[0] });
 		});
 	});
 });
@@ -222,7 +216,7 @@ router.post('/write', function(req, res){
 		pool.getConnection(function(error, connection){
 			if (error) throw error;
 
-			connection.query('SELECT * FROM user WHERE name = ? AND num = ? AND phone = ? AND motive = ?', [name, num, phone, motive], function(error, results, fields){
+			connection.query('SELECT * FROM user WHERE studentid = ?', [num], function(error, results, fields){
 				if (error) throw error;
 
 				if (results.length > 0){
@@ -230,7 +224,10 @@ router.post('/write', function(req, res){
 					return;
 				}
 
-				connection.query('INSERT INTO user (name, num, phone, motive) VALUES (?, ?, ?, ?)', [name, num, phone, motive], function(error, results, fileds){
+				const date = logger.date() + ' ' + logger.time();
+				const email = req.session.form.id;
+
+				connection.query('INSERT INTO user (date, username, studentid, email, phone, content1, content2, content3) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', [date, name, num, email, phone, motive , ' ', ' '], function(error, results, fileds){
 					if (error) throw error;
 					
 					connection.release();
